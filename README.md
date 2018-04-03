@@ -4,16 +4,22 @@
 
 1. 下载源码
 ```shell
+## shell
 git clone https://github.com/liub1993/cucumber.git
 cd cucumber
 composer install
-npm install
+
+// 安装cnpm
+brew install npm
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+cnpm install
 
 php artisan key:generate
 ```
 
 2. 配置MySQL
 ```sql
+### sql
 create database alt_iso;
 ### 如遇到安全问题时执行下面的SQL
 set global validate_password_policy=0;
@@ -28,6 +34,7 @@ grant all on alt_iso.* to 'test'@'%' identified by '111111';
 
 3. 启动服务
 ```shell
+## shell
 sudo php artisan serve
 open http://127.0.0.1:8000
 ``` 
