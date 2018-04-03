@@ -30,6 +30,7 @@ set global validate_password_length=1;
 ### 设置 validate_password_length=8 validate_password_policy=1
 ### 修改 .env
 grant all on alt_iso.* to 'test'@'%' identified by '111111';
+flush privileges;
 ```
 
 3. 启动服务
@@ -38,3 +39,16 @@ grant all on alt_iso.* to 'test'@'%' identified by '111111';
 sudo php artisan serve
 open http://127.0.0.1:8000
 ``` 
+
+### 注意事项
+1. 生产环境下需要修改复杂的MySQL的密码
+```sql
+### SQL
+create database alt_iso;
+set global validate_password_policy=1;
+set global validate_password_length=8;
+grant all on alt_iso.* to '*****'@'127.0.0.1' identified by '********';
+flush privileges;
+````
+
+2. 修改.env文件，设置 `APP_DEBUG=false` 并修改MySQL配置
