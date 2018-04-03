@@ -12,7 +12,7 @@ npm install
 php artisan key:generate
 ```
 
-2. 配置MySQL和Redis
+2. 配置MySQL
 ```sql
 create database alt_iso;
 ### 如遇到安全问题时执行下面的SQL
