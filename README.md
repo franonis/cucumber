@@ -14,6 +14,7 @@ brew install npm
 npm install -g cnpm --registry=https://registry.npm.taobao.org
 cnpm install
 
+sudo chmod -R 777 storage bootstrap/cache
 php artisan key:generate
 ```
 
@@ -39,6 +40,25 @@ flush privileges;
 sudo php artisan serve
 open http://127.0.0.1:8000
 ``` 
+
+### 开发流程
+1. 建立migrations
+```shell
+php artisan make:migration create_table_feature_definitions
+## 编辑CreateTableFeatureDefinitions
+
+php artisan make:migration create_table_protein_features
+### 编辑 CreateTableProteinFeatures
+
+// 初次迁移
+php artisan migrate
+
+// 删除表后再迁移
+php artisan migrate:refresh
+```
+
+
+
 
 ### 注意事项
 1. 生产环境下需要修改复杂的MySQL的密码
