@@ -18,7 +18,7 @@ class CreateTableProteinFeatures extends Migration
             $table->string('gene');
             $table->string('protein');
             $table->string('feature_id');
-            $table->string('value', 2048);
+            $table->string('value', 8192);
             $table->index('gene');
             $table->index('feature_id');
         });
