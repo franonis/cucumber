@@ -34,7 +34,15 @@ grant all on alt_iso.* to 'test'@'%' identified by '111111';
 flush privileges;
 ```
 
-3. 启动服务
+3. 配置nginx
+```shell
+# 安装nginx
+yum install nginx
+# 启动nginx
+/etc/init.d/nginx start
+```
+
+4. 启动服务
 ```shell
 ## shell
 sudo php artisan serve
