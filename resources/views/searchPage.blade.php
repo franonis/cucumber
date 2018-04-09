@@ -21,23 +21,23 @@
         @include('partials.errors')
         <div id="species" class="col-md-12">
             <h4>1. Choose The Type of Data:</h4>
-                <div class="radio radio-primary radio-inline">
-                    <form action="demo-form.php" method="get">
-                        <select name="datatype">
-                        <option value="geneid">GeneID</option>
-                        <option value="proteinID">ProteinID</option>
-                        <option value="location">Location</option>
-                        <option value="uniprot">Uniprot</option>
-                        </select>
-                    </form>
-                </div>
+                <form action="demo-form.php" method="get">
+                	<div class="col-md-5">
+	                    <select name="datatype" class="form-control">
+	                        <option value="geneid">GeneID</option>
+	                        <option value="proteinID">ProteinID</option>
+	                        <option value="location">Location</option>
+	                        <option value="uniprot">Uniprot</option>
+	                    </select>
+	                </div>
+                </form>
         </div>
 
         <div class="col-md-12">
             <h4>2. Input the Target:</h4>
                 <input type="text" name="feature" class="form-control" placeholder="e.g. Csa4G338980"  autocomplete="on" style="width:200px; display:inline-block !important" required>&nbsp;&nbsp;
                 <small>Example:
-                    <a href="{{ url('search/sativus/feature/name/Csa6G088160') }}">Csa4G338980</a>
+                    <a href="{{ url('search/gene/Csa6G088160') }}">Csa4G338980</a>
                 </small>
             </div>
         <div class="col-md-3">
