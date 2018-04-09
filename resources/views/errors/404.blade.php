@@ -35,7 +35,7 @@
                 font-size: 72px;
                 margin-bottom: 40px;
             }
-            
+
             .footer-button {
                 font-size: 50px;
                 margin-top: 10%;
@@ -45,7 +45,7 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">Resource Not Found!</div>
+                <div class="title">{{ $msg ?? 'Resource Not Found!' }}</div>
                 <div class="footer-button">
                     <a href="{{ url('/') }}">
                         <button class="button button-primary button-circle button-giant button-longshadow"><i class="fa fa-home"></i></button></a>
