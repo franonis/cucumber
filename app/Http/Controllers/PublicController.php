@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Library\Search;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
 class PublicController extends Controller
@@ -26,12 +27,26 @@ class PublicController extends Controller
 
     public function searchGene($gene_id)
     {
+        $http = new Client();
+        $url = 'http://cmb.bnu.edu.cn:8088/api/cucumber/feature/name/' . $gene_id;
+        $response = $http->get($url);
+        $data = json_decode((string) $response->getBody(), true);
 
-        $genes = $this->search->gene($gene_id);
-        if (count($genes) == 0) {
+        if (!preg_match('/gene/i', $data['type'])) {
             return view('searchPage', ['errors' => ['Gene Not found!']]);
         }
-        return view('search.genes', ['genes' => $genes]);
+
+        $chr = $data['chr'];
+
+        $start = $data['start'] > $data['end'] ? $data['start'] : $data['end'];
+        $end = $data['start'] < $data['end'] ? $data['start'] : $data['end'];
+
+        $start = max((2 * $start - $end), 0);
+        $end = $end + ($start - $end);
+
+        $jbrowser = 'http://cmb.bnu.edu.cn:8088/jbrowse/index.html?data=data%2Fjson%2Fcucumber&loc=' . $chr . '%3A' . $end . '..' . $start . '&tracks=DNA%2Cfeatures&highlight=';
+
+        return redirect($jbrowser);
     }
 
     public function searchProtein($protein_id)
