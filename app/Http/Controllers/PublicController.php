@@ -44,9 +44,10 @@ class PublicController extends Controller
         $start = max((2 * $start - $end), 0);
         $end = $end + ($start - $end);
 
-        $jbrowser = 'http://cmb.bnu.edu.cn:8088/jbrowse/index.html?data=data%2Fjson%2Fcucumber&loc=' . $chr . '%3A' . $end . '..' . $start . '&tracks=DNA%2Cfeatures&highlight=';
+        $jbrowser = 'http://cmb.bnu.edu.cn:8088/jbrowse/index.html?data=data%2Fjson%2Fcucumber&loc=' . $chr . '%3A' . $end . '..' . $start . '&tracklist=0&nav=0&overview=0&tracks=DNA%2Cfeatures';
 
-        return redirect($jbrowser);
+        #return redirect($url);
+        return view("search.genes");
     }
 
     public function searchProtein($protein_id)

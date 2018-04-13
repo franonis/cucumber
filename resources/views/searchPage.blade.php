@@ -19,14 +19,16 @@
         <h2>Specified Feature Search</h2>
         <hr/>
         @include('partials.errors')
-        <form action='/search' method="post">
-            <h4>1. Choose The Type of Data:</h4>
+        <div class="panel panel-info regionbox">
+            <div class="panel-heading"><h4>A. Search by Name</h4></div>
+            <div class="panel-body">
+            <form action='/search' method="post">
+            <div class="panel-heading"><h4>1. Choose The Type of Data:</h4></div>
             @csrf
         	<div class="col-md-12">
                 <select name="type" class="form-control">
                     <option value="gene">GeneID</option>
                     <option value="protein">ProteinID</option>
-                    <option value="location">Location</option>
                     <option value="uniprot">Uniprot</option>
                 </select>
                 <br>
@@ -39,10 +41,52 @@
                     <a href="{{ url('search/gene/Csa4G338980') }}">Csa4G338980</a>
                 </small>
             </div>
-            <div class="col-md-12 text-center" style="margin-top: 100px">
+            <div class="col-md-12 text-center" >
                 <button class="button button-rounded button-primary" type="submit">Search</button>
+            </div><br>
+            </form><hr>
+        </div>
+        </div>
+        </div>
+        <hr>
+        <br><br>
+        <div class="panel panel-info namebox">
+            <div class="panel-heading"><h4>B. Search by region</h4></div>
+            <div class="panel-body">
+                <form id="regionform" action="http://cmb.bnu.edu.cn:8088/search/features" method="get">
+                    <div class="col-md-12 form-inline">
+                        <h4 class="text-primary">1. Choose the chr and input the region</h4>
+                            </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label>Chr: </label>
+                                <select name="chr" id="chr" class="form-control">
+                                    <option value="chr1">chr1</option>
+                                    <option value="chr1">chr2</option>
+                                    <option value="chr1">chr3</option>
+                                    <option value="chr1">chr4</option>
+                                    <option value="chr1">chr5</option>
+                                    <option value="chr1">chr6</option>
+                                    <option value="chr1">chr7</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label> Start: </label>
+                                <input type="number" id="start" name="start" class="form-control" disabled="disabled" min="0" placeholder=" > 0">
+                            </div>
+                            <div class="col-md-3">
+                                <label>End: </label>
+                                <input type="number" id="end" name="end" style="min-width: 150px" class="form-control" disabled="disabled" min="0">
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" id="regionquery" class="button button-rounded button-primary pull-center">Search</button><br>
+                    </div><br>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 @endsection
