@@ -105,6 +105,7 @@
 
         if(start < 0 || end < start){
             layer.msg('Start should smaller than end!');
+            return;
         }
     });
 
