@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('css')
+<link rel="stylesheet" type="text/css" href="{{ asset('/layer/skin/default/layer.css') }}">
 <style type="text/css">
     mark {
         padding: 0 !important;
@@ -53,7 +54,8 @@
         <div class="panel panel-info namebox">
             <div class="panel-heading"><h4>B. Search by region</h4></div>
             <div class="panel-body">
-                <form id="regionform" action="http://cmb.bnu.edu.cn:8088/search/features" method="get">
+                <form id="regionform" action="/search" method="post">
+                    @csrf
                     <div class="col-md-12 form-inline">
                         <h4 class="text-primary">1. Choose the chr and input the region</h4>
                             </div>
@@ -72,17 +74,17 @@
                             </div>
                             <div class="col-md-3">
                                 <label> Start: </label>
-                                <input type="number" id="start" name="start" class="form-control" disabled="disabled" min="0" placeholder=" > 0">
+                                <input type="number" id="start" name="start" class="form-control" min="0" placeholder=" > 0">
                             </div>
                             <div class="col-md-3">
                                 <label>End: </label>
-                                <input type="number" id="end" name="end" style="min-width: 150px" class="form-control" disabled="disabled" min="0">
+                                <input type="number" id="end" name="end" style="min-width: 150px" class="form-control" min="0">
                             </div>
                         </div>
                         <hr>
                     </div>
                     <div class="text-center">
-                        <button type="submit" id="regionquery" class="button button-rounded button-primary pull-center">Search</button><br>
+                        <button type="submit" class="button button-rounded button-primary pull-center">Search</button><br>
                     </div><br>
                 </form>
             </div>
@@ -95,4 +97,17 @@
   @include('partials.footer')
 @endsection
 @section('js')
+<script src="{{ asset('/layer/layer.js') }}"></script>
+<script type="text/javascript">
+    $('#regionform').submit(function(e){
+        start = parseInt($('#start').val());
+        end = parseInt($('#end').val());
+
+        if(start < 0 || end < start){
+            layer.msg('Start should smaller than end!');
+        }
+    });
+
+
+</script>
 @endsection
