@@ -1,4 +1,4 @@
-	@extends('layouts.app')
+@extends('layouts.app')
 @section('css')
 
 @endsection
@@ -7,8 +7,12 @@
 @endsection
 @section('content')
 <div class="container content">
-	<h1>Welcome</h1>
-	<h5>hello</h5>
+	<h1>Uniprot</h1>
+	<ul>
+	@foreach($uniprot as $uniprot)
+		<li>{{ $uniprot->uniprot }}</li>
+	@endforeach
+	</ul>
 </div>
 @endsection
 
