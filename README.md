@@ -58,6 +58,9 @@ php artisan make:migration create_table_feature_definitions
 php artisan make:migration create_table_protein_features
 ### 编辑 CreateTableProteinFeatures
 
+php artisan make:migration createGeneToUniprotTable
+### 编辑 CreateGeneToUniprotTable
+
 // 初次迁移
 php artisan migrate
 
@@ -66,6 +69,12 @@ php artisan migrate:refresh
 ```
 
 
+### 导入数据
+```sql
+LOAD DATA LOCAL INFILE "feature_definitions" INTO TABLE feature_definitions FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n';
+LOAD DATA LOCAL INFILE "Protein_features" INTO TABLE protein_features FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n';
+LOAD DATA LOCAL INFILE 'uniprot.txt' INTO TABLE gene_to_uniprot;
+```
 
 
 ### 注意事项

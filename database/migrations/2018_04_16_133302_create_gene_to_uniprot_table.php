@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTableFeatureDefinitions extends Migration
+class CreateGeneToUniprotTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateTableFeatureDefinitions extends Migration
      */
     public function up()
     {
-        Schema::create('uniprot', function (Blueprint $table) {
+        Schema::create('gene_to_uniprot', function (Blueprint $table) {
             $table->increments('id');
             $table->string('gene')->unique();
             $table->string('uniprot');
-            // 数据量少就不建立索引了
         });
     }
 
@@ -28,6 +27,6 @@ class CreateTableFeatureDefinitions extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('uniprot');
+        Schema::dropIfExists('gene_to_uniprot');
     }
 }
