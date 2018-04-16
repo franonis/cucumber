@@ -15,8 +15,8 @@ class CreateGeneToUniprotTable extends Migration
     {
         Schema::create('gene_to_uniprot', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('gene')->unique();
-            $table->string('uniprot');
+            $table->string('gene');
+            $table->string('uniprot')->unique();
         });
     }
 
