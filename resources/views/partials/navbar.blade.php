@@ -15,7 +15,7 @@
         <li class="{{ Request::path()=='/' ? 'active':'' }}">
           <a href="{{ url('/') }}"><i class="fa fa-home" aria-hidden="true"></i>&nbsp;&nbsp;Home</a>
         </li>
-        <li class="{{ Request::path()=='/search' ? 'active':'' }}">
+        <li class="{{ preg_match('/search/', Request::path()) ? 'active':'' }}">
           <a href="{{ url('/search') }}">&nbsp;&nbsp;Search</a>
         </li>
         <li id="tools" class="dropdown{{ ( preg_match('/tool/', Request::path()) ) ? ' active':'' }}">

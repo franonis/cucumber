@@ -61,8 +61,14 @@ php artisan make:migration create_table_protein_features
 php artisan make:migration createGeneToUniprotTable
 ### 编辑 CreateGeneToUniprotTable
 
+php artisan make:migration createGeneAsEventsTable
+### 编辑 CreateGeneToUniprotTable
+
 // 初次迁移
 php artisan migrate
+
+// 回滚上一次迁移的表
+php artisan migrate:rollback
 
 // 删除表后再迁移
 php artisan migrate:refresh
@@ -74,6 +80,7 @@ php artisan migrate:refresh
 LOAD DATA LOCAL INFILE "feature_definitions" INTO TABLE feature_definitions FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n';
 LOAD DATA LOCAL INFILE "Protein_features" INTO TABLE protein_features FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n';
 LOAD DATA LOCAL INFILE 'uniprot.txt' INTO TABLE gene_to_uniprot;
+LOAD DATA LOCAL INFILE 'as.txt' INTO TABLE gene_as_events;
 ```
 
 

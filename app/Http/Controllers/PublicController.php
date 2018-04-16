@@ -38,16 +38,16 @@ class PublicController extends Controller
 
         $chr = $data['chr'];
 
-        $start = $data['start'] > $data['end'] ? $data['start'] : $data['end'];
-        $end = $data['start'] < $data['end'] ? $data['start'] : $data['end'];
+        $start = min($data['start'], $data['end']);
+        $end = max($data['start'], $data['end']);
 
-        $start = max((2 * $start - $end), 0);
-        $end = $end + ($start - $end);
+        $padding = ($end - $start) * 0.5;
+        $start = max(($start - $padding), 0);
+        $end = $end + $padding;
 
-        $jbrowser = 'http://cmb.bnu.edu.cn:8088/jbrowse/index.html?data=data%2Fjson%2Fcucumber&loc=' . $chr . '%3A' . $end . '..' . $start . '&tracklist=0&nav=0&overview=0&tracks=DNA%2Cfeatures';
+        $jbrowse = 'http://cmb.bnu.edu.cn:8088/jbrowse/index.html?data=data%2Fjson%2Fcucumber&loc=' . $chr . '%3A' . $start . '..' . $end . '&tracklist=0&nav=0&overview=0&tracks=DNA%2Cfeatures';
 
-        #return redirect($url);
-        return view("search.genes");
+        return view("search.genes", ['jbrowse' => $jbrowse]);
     }
 
     public function searchProtein($protein_id)
