@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('css')
-
+<link rel="stylesheet" type="text/css" href="{{ asset('/layer/skin/default/layer.css') }}">
 @endsection
 @section('navbar')
   @include('partials.navbar')
@@ -39,6 +39,9 @@
 	            		<dt>Proteins</dt>
 						<dl>
 							<div class="col-md-12">
+								<div class="checkbox col-sm-3">
+								  <label class="text-primary"><input id="selectall" type="checkbox" > Select All</label>
+								</div>
 		            			@foreach($gene['proteins'] as $p)
 		            			<div class="checkbox col-sm-3">
 								  <label>
@@ -49,7 +52,7 @@
             					@endforeach
             				</div>
             				<div class="text-center">
-            					<button class="btn btn-default">Compare Proteins</button>
+            					<button id="compare" class="btn btn-default">Compare Proteins</button>
             				</div>
 	            		</dl>
 	            		<dt>AS Events</dt>
@@ -87,4 +90,26 @@
   @include('partials.footer')
 @endsection
 @section('js')
+<script src="{{ asset('/layer/layer.js') }}"></script>
+<script type="text/javascript">
+	$('#selectall').click(function () {
+		checked = $(this).prop('checked');
+		$('input[name="proteins"]').prop('checked', checked);
+	});
+
+	$('#compare').click(function () {
+		var proteins = [];
+		$('input[name="proteins"]').each(function(idx, dom){
+			if($(dom).prop('checked')){
+				p = $(dom).val();
+				proteins.push(p);
+			}
+		});
+		if(proteins.length == 0){
+			layer.msg('No protein selected!');
+			return;
+		}
+		window.location.href = '{{ url('/proteins/compare/') }}?proteins=' + proteins.join(',');
+	});
+</script>
 @endsection
