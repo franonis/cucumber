@@ -96,3 +96,10 @@ flush privileges;
 ````
 
 2. 修改.env文件，设置 `APP_DEBUG=false` 并修改MySQL配置
+
+3. 由于web服务器的php版本过低，不支持5.6的laravel，切换版本为5.4
+```shell
+create-project laravel/laravel=5.4.* --prefer-dist
+mv laravel cucumber
+
+```

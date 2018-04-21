@@ -25,7 +25,7 @@
             <div class="panel-body">
             <form action='/search' method="post">
             <div class="panel-heading"><h4>1. Choose The Type of Data:</h4></div>
-            @csrf
+            {{ csrf_field() }}
         	<div class="col-md-12">
                 <select name="type" class="form-control">
                     <option value="gene">GeneID</option>
@@ -55,7 +55,7 @@
             <div class="panel-heading"><h4>B. Search by region</h4></div>
             <div class="panel-body">
                 <form id="regionform" action="/search" method="post">
-                    @csrf
+                    {{ csrf_field() }}
                     <div class="col-md-12 form-inline">
                         <h4 class="text-primary">1. Choose the chr and input the region</h4>
                             </div>
@@ -72,6 +72,7 @@
                                     <option value="chr1">chr7</option>
                                 </select>
                             </div>
+                            <input type="text" name="type" value="location" style="display: none;">
                             <div class="col-md-3">
                                 <label> Start: </label>
                                 <input type="number" id="start" name="start" class="form-control" min="0" placeholder=" > 0">

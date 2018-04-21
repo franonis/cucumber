@@ -19,12 +19,10 @@ Route::group(['prefix' => '/search'], function () {
     Route::get('/', 'PublicController@showSearchPage');
     Route::post('/', 'PublicController@searchResult');
     Route::get('/gene/{name}', 'PublicController@searchGene');
-
-    Route::post('/', 'PublicController@searchResult');
     Route::get('/protein/{name}', 'PublicController@searchProtein');
-
-    Route::post('/', 'PublicController@searchResult');
     Route::get('/uniprot/{name}', 'PublicController@searchUniprot');
+    Route::get('/location/{location}', 'PublicController@searchLocation');
+
 });
 
 Route::group(['prefix' => '/tools'], function () {

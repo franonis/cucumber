@@ -39,8 +39,8 @@
 	            		<dt>Proteins</dt>
 						<dl>
 							<div class="col-md-12">
-								<div class="checkbox col-sm-3">
-								  <label class="text-primary"><input id="selectall" type="checkbox" > Select All</label>
+								<div class="checkbox col-sm-3" style="margin-top: 0px !important">
+								  <label class="text-primary"><input id="selectall" type="checkbox"> Select All</label>
 								</div>
 		            			@foreach($gene['proteins'] as $p)
 		            			<div class="checkbox col-sm-3">

@@ -4,6 +4,7 @@ namespace App\Library;
 use App\Models\FeatureDefinition;
 use App\Models\GeneAsEvent;
 use App\Models\ProteinFeature;
+use App\Models\Uniprot;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
 
@@ -12,12 +13,14 @@ class Search
     private $fd; // feature definitions
     private $pf; // protein features
     private $as; // gene AS event
+    private $up; // uniprot
 
     public function __construct()
     {
         $this->fd = $this->getFeatureDefinition();
         $this->pf = new ProteinFeature();
         $this->as = new GeneAsEvent();
+        $this->up = new Uniprot();
     }
 
     public function cugrGeneInfo($gene_id)
@@ -54,7 +57,7 @@ class Search
         if (!$genes) {
             return null;
         }
-        $proteins = array_sort(array_unique(array_pluck($genes->toArray(), 'protein')));
+        $proteins = array_sort(array_unique(array_pluck($genes->toArray(), 'protein')), '');
 
         // 获取基因的剪切事件
         $events = $this->as->where('gene', $gene)->get();
@@ -98,5 +101,10 @@ class Search
             }
             return $definitions;
         });
+    }
+
+    public function uniprot($uniprot)
+    {
+        return $this->up->where('uniprot', $uniprot)->get();
     }
 }
