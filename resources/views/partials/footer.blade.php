@@ -1,6 +1,6 @@
 <footer>
       <div class="row">
-        <div class="col-sm-12 col-xs-12 col-md-4 col-lg-4">
+        <div class="col-sm-12 col-xs-12 col-md-5 col-lg-5">
          <div class="col-xs-12">
           <h4>Contact Us</h4>
            <div class="col-sm-12 col-xs-12 col-md-6 col-lg-6 contact">
@@ -11,7 +11,7 @@
            </div>
           </div> <!-- /col-xs-6 -->
          </div>
-         <div class="col-sm-12 col-xs-12 col-md-8 col-lg-8">
+         <div class="col-sm-12 col-xs-12 col-md-7 col-lg-7">
           <h4>Links</h4>
            <div class="col-sm-12 col-xs-12 col-md-6 col-lg-6">
             <p><a href="http://solgenomics.net/" target="_blank"><img src="http://cmb.bnu.edu.cn:8088/favicon.ico" width="40px">CuGR: an integrated database for Cucurbitaceous Germplasm Resources</a></p>

@@ -18,11 +18,11 @@ Route::get('/', function () {
 Route::group(['prefix' => '/search'], function () {
     Route::get('/', 'PublicController@showSearchPage');
     Route::post('/', 'PublicController@searchResult');
+
     Route::get('/gene/{name}', 'PublicController@searchGene');
     Route::get('/protein/{name}', 'PublicController@searchProtein');
     Route::get('/uniprot/{name}', 'PublicController@searchUniprot');
     Route::get('/location/{location}', 'PublicController@searchLocation');
-
 });
 
 Route::group(['prefix' => '/tools'], function () {
@@ -37,3 +37,5 @@ Route::group(['prefix' => '/tools'], function () {
         Route::get('redo/{jobname}', 'HomeController@redoBlastJob');
     });
 });
+
+Route::get('proteins/compare', 'PublicController@compareProteins');

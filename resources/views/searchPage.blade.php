@@ -63,13 +63,13 @@
                             <div class="col-md-2">
                                 <label>Chr: </label>
                                 <select name="chr" id="chr" class="form-control">
-                                    <option value="chr1">chr1</option>
-                                    <option value="chr1">chr2</option>
-                                    <option value="chr1">chr3</option>
-                                    <option value="chr1">chr4</option>
-                                    <option value="chr1">chr5</option>
-                                    <option value="chr1">chr6</option>
-                                    <option value="chr1">chr7</option>
+                                    <option value="Chr1">Chr1</option>
+                                    <option value="Chr2">Chr2</option>
+                                    <option value="Chr3">Chr3</option>
+                                    <option value="Chr4">Chr4</option>
+                                    <option value="Chr5">Chr5</option>
+                                    <option value="Chr6">Chr6</option>
+                                    <option value="Chr7">Chr7</option>
                                 </select>
                             </div>
                             <input type="text" name="type" value="location" style="display: none;">

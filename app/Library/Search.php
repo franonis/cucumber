@@ -32,6 +32,24 @@ class Search
         return $cugr_gene_data;
     }
 
+    public function location($location)
+    {
+        $http = new Client();
+        $url = 'http://cmb.bnu.edu.cn:8088/api/cucumber/features?location=' . $location;
+        $response = $http->get($url);
+
+        $cugr_gene_data = json_decode((string) $response->getBody(), true);
+        $data = $cugr_gene_data['data'];
+        $genes = [];
+
+        foreach ($data as $d) {
+            if ($d['type'] == 'gene') {
+                $genes[] = $d['feature'];
+            }
+        }
+        return $genes;
+    }
+
     public function gene($gene)
     {
         // 获取基因的基本信息
@@ -87,7 +105,7 @@ class Search
         return $proteins;
     }
 
-    private function getFeatureDefinition()
+    public function getFeatureDefinition()
     {
         return Cache::rememberForever('feature_definition', function () {
             $defs = (new FeatureDefinition())->all();
@@ -95,8 +113,8 @@ class Search
             foreach ($defs as $d) {
                 $definitions[$d->name] = [
                     'id' => $d->id,
-                    'unit' => $d->unit ?? '',
-                    'comment' => $d->comment ?? '',
+                    'unit' => isset($d->unit) ? $d->unit : '',
+                    'comment' => isset($d->comment) ? $d->comment : '',
                 ];
             }
             return $definitions;
