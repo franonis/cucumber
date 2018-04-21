@@ -68,7 +68,7 @@ class Search
         $start = max(($start - $padding), 0);
         $end = $end + $padding;
 
-        $jbrowse = 'http://cmb.bnu.edu.cn:8088/jbrowse/index.html?data=data%2Fjson%2Fcucumber&loc=' . $chr . '%3A' . $start . '..' . $end . '&tracklist=0&nav=0&overview=0&tracks=DNA%2Cfeatures';
+        $jbrowse = 'http://cmb.bnu.edu.cn:8086/jbrowse/index.html?data=data%2Fjson%2Fcucumber&loc=' . $chr . '%3A' . $start . '..' . $end . '&tracklist=0&nav=0&overview=0&tracks=DNA%2Cfeatures';
 
         // 获取基因的蛋白
         $genes = $this->pf->select('protein')->where('gene', $gene)->get();
@@ -94,15 +94,42 @@ class Search
     public function protein($protein)
     {
         $arr = explode('.', $protein);
-        if (count($arr) != 2 && ((int) $arr[1]) < 1) {
+        if (count($arr) != 2 || ((int) $arr[1]) < 1) {
             abort('Invalid protein ID');
         }
 
         $gene = $arr[0];
         $protein_idx = (int) $arr[1];
 
-        $proteins = $this->pf->where('gene', $gene)->where('protein', $protein_idx)->with('feature')->get();
-        return $proteins;
+        $proteins = $this->pf->where('gene', $gene)->where('protein', $protein_idx)->get();
+        return $proteins ? $proteins : [];
+    }
+
+    public function proteinWithFeature($protein)
+    {
+        $protein_info = $this->protein($protein);
+        if (empty($protein)) {
+            return [];
+        }
+
+        $features_info = $this->getFeatureDefinition();
+        $features = [];
+        foreach ($features_info as $f => $fi) {
+            $features[$fi['id']] = [
+                'name' => $f,
+                'unit' => $fi['unit'],
+                'comment' => $fi['comment'],
+            ];
+        }
+        unset($features_info);
+
+        $data = ['features' => $features, $protein => []];
+
+        foreach ($protein_info as $pi) {
+            $data[$protein][$pi->feature_id] = $pi->value;
+        }
+
+        return $data;
     }
 
     public function getFeatureDefinition()

@@ -8,6 +8,8 @@
 git clone https://github.com/liub1993/cucumber.git
 cd cucumber
 composer install
+## 如果删除了composer.lock,修改 vendor/laravel/framework/src/Illuminate/Support/composer.json中的"doctrine/inflector": "~1.1",为"doctrine/inflector": "1.0"
+## 如果第三方库报错，则从CuGR项目中复制它的文件过来覆盖
 
 // 安装cnpm
 brew install npm

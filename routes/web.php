@@ -25,17 +25,4 @@ Route::group(['prefix' => '/search'], function () {
     Route::get('/location/{location}', 'PublicController@searchLocation');
 });
 
-Route::group(['prefix' => '/tools'], function () {
-    Route::group(['prefix' => 'blast'], function () {
-        Route::get('/', 'HomeController@getBlast')->name('blast');
-        Route::get('config', 'HomeController@getBlastConfig');
-        Route::any('sequence/validation', 'HomeController@validateBlastSeq');
-        Route::post('dispatch', 'HomeController@dispatchBlastJob');
-        Route::get('result/{jobname}', 'HomeController@showBlastResult')->name('blastresultview');
-        Route::get('download/{jobname}/', 'HomeController@downloadBlastResult');
-        Route::get('validate/jobname/{jobname}', 'HomeController@validateBlastJobName');
-        Route::get('redo/{jobname}', 'HomeController@redoBlastJob');
-    });
-});
-
 Route::get('proteins/compare', 'PublicController@compareProteins');
