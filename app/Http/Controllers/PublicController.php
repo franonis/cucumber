@@ -37,12 +37,13 @@ class PublicController extends Controller
 
     public function searchProtein($protein_id)
     {
-        $proteins = $this->search->proteinWithFeature($protein_id);
-        if (!$proteins || count($proteins) == 0) {
+        $data = $this->search->proteinWithFeature($protein_id);
+
+        if (!$data || count($data) == 0) {
             return view('searchPage', ['errors' => ['Proteins Not found!']]);
         }
 
-        return view('search.proteins', ['proteins' => $proteins]);
+        return view('search.proteins', $data);
     }
 
     public function searchUniprot($uniprot)

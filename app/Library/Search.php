@@ -66,7 +66,7 @@ class Search
         // 获取基因的基本信息
         $cugr_gene_data = $this->cugrGeneInfo($gene);
 
-        if ($cugr_gene_data || (!preg_match('/gene/i', $cugr_gene_data['type']))) {
+        if (!$cugr_gene_data || (!preg_match('/gene/i', $cugr_gene_data['type']))) {
             return null;
         }
 
@@ -143,6 +143,16 @@ class Search
         }
 
         return $data;
+    }
+
+    public function proteinsWithFeatures($proteins)
+    {
+        $datum = [];
+        foreach ($proteins as $protein) {
+            $data = $this->proteinWithFeature($protein);
+            $datum = array_merge($datum, $data);
+        }
+        return $datum;
     }
 
     public function getFeatureDefinition()

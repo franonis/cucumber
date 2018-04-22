@@ -9,9 +9,6 @@
 <div class="container content">
 	<h1>Protein</h1>
 	<ul>
-	@foreach($proteins as $p)
-		<li>{{ $p->gene }}.{{ $p->protein }}: {{ $p->feature->name}}</li>
-	@endforeach
 	</ul>
 </div>
 @endsection
