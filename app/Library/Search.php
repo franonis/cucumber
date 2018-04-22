@@ -6,6 +6,7 @@ use App\Models\GeneAsEvent;
 use App\Models\ProteinFeature;
 use App\Models\Uniprot;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use Illuminate\Support\Facades\Cache;
 
 class Search
@@ -27,8 +28,14 @@ class Search
     {
         $http = new Client();
         $url = 'http://cmb.bnu.edu.cn:8088/api/cucumber/feature/name/' . $gene_id;
-        $response = $http->get($url);
+        try {
+            $response = $http->get($url);
+        } catch (ClientException $e) {
+            abort(500, 'Can not connect to CuGR, please try later..');
+        }
+
         $cugr_gene_data = json_decode((string) $response->getBody(), true);
+
         return $cugr_gene_data;
     }
 
@@ -36,7 +43,11 @@ class Search
     {
         $http = new Client();
         $url = 'http://cmb.bnu.edu.cn:8088/api/cucumber/features?location=' . $location;
-        $response = $http->get($url);
+        try {
+            $response = $http->get($url);
+        } catch (ClientException $e) {
+            abort(500, 'Can not connect to CuGR, please try later..');
+        }
 
         $cugr_gene_data = json_decode((string) $response->getBody(), true);
         $data = $cugr_gene_data['data'];
@@ -55,7 +66,7 @@ class Search
         // 获取基因的基本信息
         $cugr_gene_data = $this->cugrGeneInfo($gene);
 
-        if ($cugr_gene_data && (!preg_match('/gene/i', $cugr_gene_data['type']))) {
+        if ($cugr_gene_data || (!preg_match('/gene/i', $cugr_gene_data['type']))) {
             return null;
         }
 
@@ -68,7 +79,7 @@ class Search
         $start = max(($start - $padding), 0);
         $end = $end + $padding;
 
-        $jbrowse = 'http://cmb.bnu.edu.cn:8086/jbrowse/index.html?data=data%2Fjson%2Fcucumber&loc=' . $chr . '%3A' . $start . '..' . $end . '&tracklist=0&nav=0&overview=0&tracks=DNA%2Cfeatures';
+        $jbrowse = 'http://cmb.bnu.edu.cn:8088/jbrowse/index.html?data=data%2Fjson%2Fcucumber&loc=' . $chr . '%3A' . $start . '..' . $end . '&tracklist=0&nav=0&overview=0&tracks=DNA%2Cfeatures';
 
         // 获取基因的蛋白
         $genes = $this->pf->select('protein')->where('gene', $gene)->get();
@@ -94,22 +105,24 @@ class Search
     public function protein($protein)
     {
         $arr = explode('.', $protein);
+
         if (count($arr) != 2 || ((int) $arr[1]) < 1) {
-            abort('Invalid protein ID');
+            return null;
         }
 
         $gene = $arr[0];
         $protein_idx = (int) $arr[1];
 
         $proteins = $this->pf->where('gene', $gene)->where('protein', $protein_idx)->get();
-        return $proteins ? $proteins : [];
+        return $proteins ? $proteins : null;
     }
 
     public function proteinWithFeature($protein)
     {
         $protein_info = $this->protein($protein);
-        if (empty($protein)) {
-            return [];
+
+        if (empty($protein_info)) {
+            return null;
         }
 
         $features_info = $this->getFeatureDefinition();

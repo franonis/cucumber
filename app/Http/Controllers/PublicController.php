@@ -26,8 +26,8 @@ class PublicController extends Controller
 
     public function searchGene($gene_id)
     {
-
         $info = $this->search->gene($gene_id);
+
         if (!$info) {
             return view('searchPage', ['errors' => ['Gene Not found!']]);
         }
@@ -38,8 +38,8 @@ class PublicController extends Controller
     public function searchProtein($protein_id)
     {
         $proteins = $this->search->proteinWithFeature($protein_id);
-        if (count($proteins) == 0) {
-            abort(404, 'Proteins Not found!');
+        if (!$proteins || count($proteins) == 0) {
+            return view('searchPage', ['errors' => ['Proteins Not found!']]);
         }
 
         return view('search.proteins', ['proteins' => $proteins]);
@@ -49,8 +49,8 @@ class PublicController extends Controller
     {
         $genes = $this->search->uniprot($uniprot);
         $num = count($genes);
-        if ($num == 0) {
-            return redirect('/search')->with('warnings', ['Uniprot ID is not found!']);
+        if (!$genes || $num == 0) {
+            return view('searchPage', ['errors' => ['Uniprot ID is not found!']]);
         } elseif ($num == 1) {
             return $this->searchGene($genes[0]->gene);
         } else {
