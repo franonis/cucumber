@@ -27,8 +27,8 @@
             <div class="panel-heading"><h4>1. Choose The Type of Data:</h4></div>
             {{ csrf_field() }}
         	<div class="col-md-12">
-                <select name="type" class="form-control">
-                    <option value="gene">GeneID</option>
+                <select id="type" name="type" class="form-control">
+                    <option value="gene" selected="selected">GeneID</option>
                     <option value="protein">ProteinID</option>
                     <option value="uniprot">Uniprot</option>
                 </select>
@@ -39,7 +39,7 @@
             <div class="col-md-12">
                 <input type="text" name="query" class="form-control" placeholder="e.g. Csa4G338980"  autocomplete="on" style="width:200px; display:inline-block !important" required>&nbsp;&nbsp;
                 <small>Example:
-                    <a href="{{ url('search/gene/Csa4G338980') }}">Csa4G338980</a>
+                    <a href="{{ url('search/gene/Csa4G338980') }}" id="example">Csa4G338980</a>
                 </small>
             </div>
             <div class="col-md-12 text-center" >
@@ -109,7 +109,24 @@
             return;
         }
     });
+    $('#type').change(function () {
+        type = $('#type').val()
 
+        if(type == 'protein'){
+            value = 'Csa4G338980.1'
+            link = '{{ url('search/protein/Csa4G338980.1') }}'
+        }
+        else if(type == 'uniprot'){
+            value = 'A0A0A0LTV1';
+            link = '{{ url('search/uniprot/A0A0A0LTV1') }}'
+        }
+        else {
+            value = 'Csa4G338980';
+            link = '{{ url('search/gene/Csa4G338980') }}'
+        }
+        $('#example').html(value)
+        $('#example').attr('href', link);
+    });
 
 </script>
 @endsection

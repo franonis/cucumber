@@ -24,7 +24,7 @@
             				</button>
 	                    </div>
 	                    <iframe id="jbrowse" style="border: 1px solid #e7e7e7"
-	                    	src="{{ $gene['jbrowse'] }}" width="100%" height="300">
+	                    	src="{{ $gene['jbrowse'] }}" width="100%" height="400">
 	                    </iframe>
 	                    <p class="pull-right">* You may right click on the protein to view details.</p>
 	                </div>
@@ -52,7 +52,7 @@
             					@endforeach
             				</div>
             				<div class="text-center">
-            					<button id="compare" class="btn btn-default">Compare Proteins</button>
+            					<button id="compare" class="btn btn-default">Select Protein(s)</button>
             				</div>
 	            		</dl>
 	            		<dt>AS Events</dt>

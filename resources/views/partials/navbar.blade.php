@@ -25,7 +25,7 @@
               <a href="{{ url('tools/blast') }}">BLAST </a>
             </li> --}}
             <li class="dropdown{{ ( preg_match('/jbrowse/', Request::path()) ) ? ' active':'' }}">
-              <a href="{{ url('http://cmb.bnu.edu.cn:8088/jbrowse/index.html?data=data%2Fjson%2Fcuas&loc=Chr4%3A14023141..14037190&tracklist=1&nav=1&overview=1&tracks=features%2CDNA') }}" target="jbrowse">JBrowse </a>
+              <a href="{{ url('http://cmb.bnu.edu.cn:8088/jbrowse/index.html?data=data%2Fjson%2Fcuas&loc=Chr4%3A14023141..14037190&tracklist=1&nav=1&overview=1&tracks=DNA%2Cfeatures') }}" target="jbrowse">JBrowse </a>
             </li>
            {{--  <li class="dropdown{{ (preg_match('/apis/', Request::path() ) ? ' active':'') }}">
               <a href="{{ url('tools/apis') }}">APIs </a>

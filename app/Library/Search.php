@@ -79,7 +79,7 @@ class Search
         $start = max(($start - $padding), 0);
         $end = $end + $padding;
 
-        $jbrowse = 'http://cmb.bnu.edu.cn:8088/jbrowse/index.html?data=data%2Fjson%2Fcucumber&loc=' . $chr . '%3A' . $start . '..' . $end . '&tracklist=0&nav=0&overview=0&tracks=DNA%2Cfeatures';
+        $jbrowse = 'http://cmb.bnu.edu.cn:8088/jbrowse/index.html?data=data%2Fjson%2Fcuas&loc=' . $chr . '%3A' . $start . '..' . $end . '&tracklist=0&nav=0&overview=0&tracks=DNA%2Cfeatures';
 
         // 获取基因的蛋白
         $genes = $this->pf->select('protein')->where('gene', $gene)->get();
