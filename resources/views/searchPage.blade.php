@@ -23,7 +23,7 @@
         <div class="panel panel-info regionbox">
             <div class="panel-heading"><h4>A. Search by Name</h4></div>
             <div class="panel-body">
-            <form action='/search' method="post">
+            <form action='{{ url('./search') }}' method="post">
             <div class="panel-heading"><h4>1. Choose The Type of Data:</h4></div>
             {{ csrf_field() }}
         	<div class="col-md-12">
@@ -54,7 +54,7 @@
         <div class="panel panel-info namebox">
             <div class="panel-heading"><h4>B. Search by region</h4></div>
             <div class="panel-body">
-                <form id="regionform" action="/search" method="post">
+                <form id="regionform" action="{{ url('./search') }}" method="post">
                     {{ csrf_field() }}
                     <div class="col-md-12 form-inline">
                         <h4 class="text-primary">1. Choose the chr and input the region</h4>
