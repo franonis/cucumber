@@ -37,10 +37,10 @@ class PublicController extends Controller
 
     public function searchProtein($protein_id)
     {
-        $data = $this->search->proteinWithFeature($protein_id);
+        $data = $this->search->proteinWithFeatures($protein_id);
 
         if (!$data || count($data) == 0) {
-            return view('searchPage', ['errors' => ['Proteins Not found!']]);
+            return view('searchPage', ['errors' => ['Protein Not found!']]);
         }
 
         return view('search.proteins', $data);
@@ -121,6 +121,13 @@ class PublicController extends Controller
                 unset($proteins[$idx]);
             }
         }
-        return view('protein.compare', ['proteins' => json_encode($proteins)]);
+        $data = $this->search->proteinsWithFeatures($proteins);
+
+        if (!$data || count($data) == 0) {
+            return view('searchPage', ['errors' => ['Protein Not found!']]);
+        }
+
+        return view('search.proteins', $data);
+
     }
 }

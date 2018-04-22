@@ -117,7 +117,7 @@ class Search
         return $proteins ? $proteins : null;
     }
 
-    public function proteinWithFeature($protein)
+    public function proteinWithFeatures($protein)
     {
         $protein_info = $this->protein($protein);
 
@@ -149,7 +149,7 @@ class Search
     {
         $datum = [];
         foreach ($proteins as $protein) {
-            $data = $this->proteinWithFeature($protein);
+            $data = $this->proteinWithFeatures($protein);
             $datum = array_merge($datum, $data);
         }
         return $datum;
