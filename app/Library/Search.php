@@ -75,11 +75,11 @@ class Search
         $start = min($cugr_gene_data['start'], $cugr_gene_data['end']);
         $end = max($cugr_gene_data['start'], $cugr_gene_data['end']);
 
-        $padding = ($end - $start) * 0.5;
-        $start = max(($start - $padding), 0);
-        $end = $end + $padding;
+        $padding = ($end - $start) * 0.1;
+        $_start = max(($start - $padding), 0);
+        $_end = $end + $padding;
 
-        $jbrowse = 'http://cmb.bnu.edu.cn:8088/jbrowse/index.html?data=data%2Fjson%2Fcuas&loc=' . $chr . '%3A' . $start . '..' . $end . '&tracklist=0&nav=0&overview=0&tracks=DNA%2Cfeatures';
+        $jbrowse = 'http://cmb.bnu.edu.cn:8088/jbrowse/index.html?data=data%2Fjson%2Fcuas&loc=' . $chr . '%3A' . $_start . '..' . $_end . '&tracklist=0&nav=0&overview=0&tracks=DNA%2Cfeatures';
 
         // 获取基因的蛋白
         $genes = $this->pf->select('protein')->where('gene', $gene)->get();
