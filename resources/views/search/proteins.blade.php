@@ -6,10 +6,11 @@
   @include('partials.navbar')
 @endsection
 @section('content')
-<div class="container content">
-	<h1>Protein</h1>
-	<ul>
-	</ul>
+<div id="content" class="container-fluid content">
+	<div class="row" id="pca"> <!-- protein compare area-->
+		<div class="col-md-12" id="pca_feature_checker"></div>
+	</div>
+
 </div>
 @endsection
 
@@ -17,4 +18,11 @@
   @include('partials.footer')
 @endsection
 @section('js')
+<script src="{{ asset('/js/proteins.compare.js') }}"></script>
+<script src="https://cdn.bootcss.com/echarts/4.0.4/echarts-en.js"></script>
+<script>
+	var proteins = {!! json_encode($proteins) !!};
+	var features = {!! json_encode($features) !!};
+	renderPage(features, proteins);
+</script>
 @endsection
