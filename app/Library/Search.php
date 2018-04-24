@@ -142,7 +142,7 @@ class Search
         ];
 
         foreach ($protein_info as $pi) {
-            $data['proteins'][$protein][$pi->feature_id] = $pi->value;
+            $data['proteins'][$protein][$pi->feature_id] = trim($pi->value, '; ');
         }
 
         return $data;
