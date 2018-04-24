@@ -71,13 +71,14 @@ class Search
         }
 
         $chr = $cugr_gene_data['chr'];
+        $cugr_gene_data['start'] = (int) $cugr_gene_data['start'];
+        $cugr_gene_data['end'] = (int) $cugr_gene_data['end'];
 
         $start = min($cugr_gene_data['start'], $cugr_gene_data['end']);
         $end = max($cugr_gene_data['start'], $cugr_gene_data['end']);
 
-        $padding = ($end - $start) * 0.1;
-        $_start = max(($start - $padding), 0);
-        $_end = $end + $padding;
+        $_start = max(($start - 100), 0);
+        $_end = $end + 100;
 
         $jbrowse = 'http://cmb.bnu.edu.cn:8088/jbrowse/index.html?data=data%2Fjson%2Fcuas&loc=' . $chr . '%3A' . $_start . '..' . $_end . '&tracklist=0&nav=0&overview=0&tracks=DNA%2Cfeatures';
 
