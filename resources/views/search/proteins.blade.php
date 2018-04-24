@@ -8,6 +8,7 @@
 @section('content')
 <div id="content" class="container-fluid content">
 	<div class="row" id="pca"> <!-- protein compare area-->
+		<h2 id="pca_title"></h2>
 		<div class="col-md-12" id="pca_feature_checker"></div>
 	</div>
 
