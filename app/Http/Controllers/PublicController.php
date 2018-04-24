@@ -121,6 +121,7 @@ class PublicController extends Controller
                 unset($proteins[$idx]);
             }
         }
+
         $data = $this->search->proteinsWithFeatures($proteins);
 
         if (!$data || count($data) == 0) {

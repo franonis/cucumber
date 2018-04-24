@@ -128,7 +128,7 @@ class Search
         $features_info = $this->getFeatureDefinition();
         $features = [];
         foreach ($features_info as $f => $fi) {
-            $features[$fi['id']] = [
+            $features[(int) $fi['id']] = [
                 'name' => $f,
                 'unit' => $fi['unit'],
                 'comment' => $fi['comment'],
@@ -136,10 +136,13 @@ class Search
         }
         unset($features_info);
 
-        $data = ['features' => $features, $protein => []];
+        $data = [
+            'features' => $features,
+            'proteins' => [$protein => []],
+        ];
 
         foreach ($protein_info as $pi) {
-            $data[$protein][$pi->feature_id] = $pi->value;
+            $data['proteins'][$protein][$pi->feature_id] = $pi->value;
         }
 
         return $data;
@@ -150,8 +153,13 @@ class Search
         $datum = [];
         foreach ($proteins as $protein) {
             $data = $this->proteinWithFeatures($protein);
-            $datum = array_merge($datum, $data);
+            if (empty($datum)) {
+                $datum = $data;
+                continue;
+            }
+            $datum['proteins'][$protein] = $data['proteins'][$protein];
         }
+
         return $datum;
     }
 
