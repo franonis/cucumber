@@ -1,51 +1,71 @@
 .pca .percent_per_protein {
-	width: 100%;
 	height: 400px;
 }
 
 .pca .sequence-length {
-	width: 100%;
 	height: 4em;
 }
 
 .pca .molecular-weight {
-	width: 100%;
 	height: 4em;
 }
 
 .pca .gravy {
-	width: 100%;
 	height: 4em;
 }
 
 .pca .charge {
-	width: 100%;
 	height: 4em;
 }
 
 .pca .mec {
-	width: 100%;
 	height: 4em;
 }
 
 .pca .iep {
-	width: 100%;
 	height: 4em;
 }
 
 .pca .ai {
-	width: 100%;
 	height: 4em;
 }
 
-.pca .secondary-structure {
-	width: 100%;
+.pca .secondary-structure .feature-value {
 	height: 15em;
 	overflow: scroll;
 }
 
-.pca .coil {
-	widows: 100%;
+.pca .coil .feature-value {
+	height: 15em;
+	overflow: scroll;
+}
+
+.pca .lc .feature-value {
+	height: 15em;
+	overflow: scroll;
+}
+
+.pca .pest .feature-value {
+	height: 15em;
+	overflow: scroll;
+}
+
+.pca .transmembrane .feature-value {
+	height: 15em;
+	overflow: scroll;
+}
+
+
+.pca .disorder .feature-value {
+	height: 15em;
+	overflow: scroll;
+}
+
+.pca .prosite table td {
+	vertical-align: middle;
+}
+
+.pca .prosite .feature-value {
 	height: 15em;
 	overflow: scroll;
 }
