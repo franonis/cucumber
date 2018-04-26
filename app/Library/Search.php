@@ -4,6 +4,7 @@ namespace App\Library;
 use App\Models\FeatureDefinition;
 use App\Models\GeneAsEvent;
 use App\Models\ProteinFeature;
+use App\Models\ProteinSequence;
 use App\Models\Uniprot;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
@@ -115,12 +116,22 @@ class Search
         $protein_idx = (int) $arr[1];
 
         $proteins = $this->pf->where('gene', $gene)->where('protein', $protein_idx)->get();
+
         return $proteins ? $proteins : null;
+    }
+
+    public function proteinSequence($protein)
+    {
+        $pro_seq = new ProteinSequence();
+        $seq = $pro_seq->select('sequence')->where('protein', $protein)->first();
+
+        return $seq ? $seq->sequence : '';
     }
 
     public function proteinWithFeatures($protein)
     {
         $protein_info = $this->protein($protein);
+        $sequence = $this->proteinSequence($protein);
 
         if (empty($protein_info)) {
             return null;
@@ -139,7 +150,7 @@ class Search
 
         $data = [
             'features' => $features,
-            'proteins' => [$protein => []],
+            'proteins' => [$protein => ['sequence' => $sequence]],
         ];
 
         foreach ($protein_info as $pi) {

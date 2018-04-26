@@ -129,6 +129,18 @@ class PublicController extends Controller
         }
 
         return view('search.proteins', $data);
+    }
 
+    public function downloadProteinSequence($protein)
+    {
+        $seq = $this->search->proteinSequence($protein);
+        $fasta = '>' . $protein . "\n" . $seq;
+        return response($fasta)
+            ->withHeaders([
+                'Content-Disposition' => 'attachment;filename="' . $protein . '.fasta"',
+                'Content-Type' => 'text/plain',
+                'Content-length' => strlen($fasta),
+                'Connection' => 'close',
+            ]);
     }
 }

@@ -25,4 +25,7 @@ Route::group(['prefix' => '/search'], function () {
     Route::get('/location/{location}', 'PublicController@searchLocation');
 });
 
-Route::get('proteins/compare', 'PublicController@compareProteins');
+Route::group(['prefix' => '/protein'], function () {
+    Route::get('/compare', 'PublicController@compareProteins');
+    Route::get('/{protein}/sequence/download', 'PublicController@downloadProteinSequence');
+});
