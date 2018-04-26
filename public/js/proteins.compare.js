@@ -1,9 +1,12 @@
 /*
-* 依赖于jQuery和echars.min.js
+* 依赖于jQuery, echars.min.js, bootstrap
 *
 */
 
 var DEFAULT_VALUE = '---';
+var C_LABLE_CLASS = 'label-info';
+var H_LABLE_CLASS = 'label-warning';
+var E_LABEL_CLASS = 'label-primary';
 
 /*
  *  渲染整个页面
@@ -71,7 +74,7 @@ function renderOneProtein(features, name, protein, col='col-md-12', new_row=fals
 	renderMolarExtinctionCoefficient(pdom_id, getFeatureValue('molar_extinction_coefficient', features, protein));
 	renderIsoElectricPoint(pdom_id, getFeatureValue('iso_electric_point', features, protein));
 	renderAliphaticIndex(pdom_id, getFeatureValue('aliphatic_index', features, protein));
-	renderSecondaryStructure(pdom_id, getFeatureValue('secondary_structure', features, protein));
+	renderSecondaryStructure(pdom_id, getFeatureValue('secondary_structure', features, protein), protein.sequence);
 	renderCoil(pdom_id, getFeatureValue('coil', features, protein));
 	renderLowComplexity(pdom_id, getFeatureValue('low_complexity', features, protein));
 	renderPEST(pdom_id, getFeatureValue('PEST', features, protein));
@@ -91,14 +94,135 @@ function renderOneProtein(features, name, protein, col='col-md-12', new_row=fals
 	}
 }
 
+/*
+ *	渲染单个特征
+ */
+
+function renderPercentPerProtein(pdom_id, value, features) {
+	var feature_name = 'percent_per_protein';
+	var amino_acids  = getFeatureInfo(feature_name, features); amino_acids = amino_acids['comment'].split('-');
+
+	if(value === null){
+		$('#'+pdom_id).append('<div id="' + pdom_id + '_percent_per_protein" class="text-center percent_per_protein"><h4>Amino acid Percentage</h4><p class="feature-value">'+DEFAULT_VALUE+'</p></div>');
+		return;
+	}
+
+	value = value.split('-');
+	feature_name = feature_name.replace(/\_/, ' ').toUpperCase();
+
+	$('#'+ pdom_id).append('<div id="' + feature_name + '_' + pdom_id + '" class="percent_per_protein"></div>');
+	
+	data = [];
+	for(i in amino_acids){
+		data.push({value: value[i], name: amino_acids[i]})
+	}
+
+	var percent_per_protein_chart = echarts.init(document.getElementById(feature_name + '_' + pdom_id));
+	var option = {
+	    title : {
+	        text: 'Amino acid Percentage',
+	        x: 'center'
+	    },
+	    tooltip : {
+	        trigger: 'Amino acid',
+	        formatter: "{a} <br/>{b} : {c} ({d}%)"
+	    },
+	    
+	    series : [
+	        {
+	            name: 'Amino acid Percentage',
+	            type: 'pie',
+	            radius : '55%',
+	            center: ['50%', '60%'],
+	            data: data,
+	            itemStyle: {
+	                emphasis: {
+	                    shadowBlur: 10,
+	                    shadowOffsetX: 0,
+	                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+	                }
+	            }
+	        }
+	    ]
+	};
+
+	percent_per_protein_chart.setOption(option);
+}
+
 function renderSequenceLength(pdom_id, length) {
 	if(length === null) {length = DEFAULT_VALUE;}
 	$('#'+pdom_id).append(
-		'<div id="' + pdom_id + '_sequence_length'+'" class="text-center sequence-length">'+
+		'<div id="' + pdom_id + '_sequence_length" class="text-center sequence-length">'+
 		'<h4>Protein Length</h4><p class="feature-value">'+length+
 		' bp <a class="button button-tiny" href="/protein/'+ pdom_id.replace('_', '.') +'/sequence/download"><i class="fa fa-download"></i> FASTA</a></p>' +
 		'</div>'
 	);
+}
+
+function renderMolecularWeight(pdom_id, weight) {
+	if(weight === null) {weight = DEFAULT_VALUE;}
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_molecular_weight" class="text-center molecular-weight"><h4>Molecular Weight</h4><p class="feature-value">'+ weight+' </p></div>');
+}
+
+function renderGravy(pdom_id, gravy) {
+	if(gravy === null) {gravy = DEFAULT_VALUE;}
+	gravy = gravy.substr(0, gravy.indexOf(".") + 4);  // 保留小数后3位
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_gravy" class="text-center gravy"><h4>Gravy</h4><p class="feature-value">'+ gravy +' </p></div>');
+}
+
+function renderCharge(pdom_id, charge) {
+	if(charge === null) {charge = DEFAULT_VALUE;}
+	charge = charge.substr(0, charge.indexOf(".") + 4);  // 保留小数后3位
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_charge+" class="text-center charge"><h4>Charge</h4><p class="feature-value">'+ charge +' </p></div>');
+}
+
+
+function renderMolarExtinctionCoefficient(pdom_id, mec) {
+	if(mec === null) {mec = DEFAULT_VALUE;}
+	mec = mec.substr(0, mec.indexOf(".") + 4);  // 保留小数后3位
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_molar_extinction_coefficient" class="text-center mec"><h4>Molar Extinction Coefficient</h4><p class="feature-value">'+ mec +' </p></div>');
+}
+
+function renderIsoElectricPoint(pdom_id, iep) {
+	if(iep === null) {iep = DEFAULT_VALUE;}
+	iep = iep.substr(0, iep.indexOf(".") + 4);  // 保留小数后3位
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_iso_electric_point" class="text-center iep"><h4>Iso Electric Point</h4><p class="feature-value">'+ iep +' </p></div>');
+}
+
+function renderAliphaticIndex(pdom_id, ai) {
+	if(ai === null) {ai = DEFAULT_VALUE;}
+	ai = ai.substr(0, ai.indexOf(".") + 4);  // 保留小数后3位
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_aliphatic_index" class="text-center ai"><h4>Aliphatic Index</h4><p class="feature-value">'+ ai +' </p></div>');
+}
+
+
+function renderSecondaryStructure(pdom_id, ss, seq) {
+	if(ss === null) {
+		ss = DEFAULT_VALUE;
+	} else {
+		var html = '<p>Legend: <label class="'+C_LABLE_CLASS+'">C</label> <label class="'+H_LABLE_CLASS+'">H</label> <label class="' + E_LABEL_CLASS + '">E</label></p>';
+		html += '<p class="text-left">';
+		ss = ss.split(';');
+		for(i in ss){
+			var loc = ss[i].split('-');
+			
+			var type, start, len;
+			if(loc[0] == 'C'){type = C_LABLE_CLASS;} 
+			else if(loc[0] == 'H'){type = H_LABLE_CLASS;}
+			else {type = E_LABEL_CLASS;}
+			start = parseInt(loc[1]) - 1;
+			end = parseInt(loc[2]) - start;
+			var subseq = seq.substr(start, end);
+			for(j in subseq){
+				html += '<label class="'+ type +'">' + subseq[j] + '</label>';
+			}
+		}
+		html += '</p>';
+		ss = html;
+	}
+
+	// C/E/H - start - end
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_secondary_structure" class="text-center secondary-structure"><h4>Secondary Structure</h4><p class="feature-value">'+ ss +' </p></div>');
 }
 
 
@@ -186,101 +310,21 @@ function renderCoil(pdom_id, coil) {
 	$('#'+pdom_id).append('<div id="' + pdom_id + '_secondary_structure+' + '" class="text-center coil"><h4>Coil</h4><p class="feature-value">'+ coil +' </p></div>');
 }
 
-function renderSecondaryStructure(pdom_id, ss) {
-	if(ss === null) {ss = DEFAULT_VALUE;}
-	// C/E/H - start - end
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_secondary_structure+' + '" class="text-center secondary-structure"><h4>Secondary Structure</h4><p class="feature-value">'+ ss +' </p></div>');
-}
-
-function renderAliphaticIndex(pdom_id, ai) {
-	if(ai === null) {ai = DEFAULT_VALUE;}
-	ai = ai.substr(0, ai.indexOf(".") + 4);  // 保留小数后3位
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_aliphatic_index+' + '" class="text-center ai"><h4>Aliphatic Index</h4><p class="feature-value">'+ ai +' </p></div>');
-}
-
-function renderIsoElectricPoint(pdom_id, iep) {
-	if(iep === null) {iep = DEFAULT_VALUE;}
-	iep = iep.substr(0, iep.indexOf(".") + 4);  // 保留小数后3位
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_iso_electric_point+' + '" class="text-center iep"><h4>Iso Electric Point</h4><p class="feature-value">'+ iep +' </p></div>');
-}
-
-function renderMolarExtinctionCoefficient(pdom_id, mec) {
-	if(mec === null) {mec = DEFAULT_VALUE;}
-	mec = mec.substr(0, mec.indexOf(".") + 4);  // 保留小数后3位
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_molar_extinction_coefficient+' + '" class="text-center mec"><h4>Molar Extinction Coefficient</h4><p class="feature-value">'+ mec +' </p></div>');
-}
-
-function renderCharge(pdom_id, charge) {
-	if(charge === null) {charge = DEFAULT_VALUE;}
-	charge = charge.substr(0, charge.indexOf(".") + 4);  // 保留小数后3位
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_charge+' + '" class="text-center charge"><h4>Charge</h4><p class="feature-value">'+ charge +' </p></div>');
-}
-
-function renderGravy(pdom_id, gravy) {
-	if(gravy === null) {gravy = DEFAULT_VALUE;}
-	gravy = gravy.substr(0, gravy.indexOf(".") + 4);  // 保留小数后3位
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_gravy+' + '" class="text-center gravy"><h4>Gravy</h4><p class="feature-value">'+ gravy +' </p></div>');
-}
-
-function renderMolecularWeight(pdom_id, weight) {
-	if(weight === null) {weight = DEFAULT_VALUE;}
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_molecular_weight'+'" class="text-center molecular-weight"><h4>Molecular Weight</h4><p class="feature-value">'+ weight+' </p></div>');
-}
 
 
 
 
 
-function renderPercentPerProtein(pdom_id, value, features) {
-	var feature_name = 'percent_per_protein';
-	var amino_acids  = getFeatureInfo(feature_name, features); amino_acids = amino_acids['comment'].split('-');
 
-	if(value === null){
-		$('#'+pdom_id).append('<div id="' + pdom_id + '_percent_per_protein" class="text-center percent_per_protein"><h4>Amino acid Percentage In the Protein</h4><p class="feature-value">'+DEFAULT_VALUE+'</p></div>');
-		return;
-	}
 
-	value = value.split('-');
-	feature_name = feature_name.replace(/\_/, ' ').toUpperCase();
 
-	$('#'+ pdom_id).append('<div id="' + feature_name + '_' + pdom_id + '" class="percent_per_protein"></div>');
-	
-	data = [];
-	for(i in amino_acids){
-		data.push({value: value[i], name: amino_acids[i]})
-	}
 
-	var percent_per_protein_chart = echarts.init(document.getElementById(feature_name + '_' + pdom_id));
-	var option = {
-	    title : {
-	        text: 'Amino acid Percentage In the Protein',
-	        x: 'center'
-	    },
-	    tooltip : {
-	        trigger: 'Amino acid',
-	        formatter: "{a} <br/>{b} : {c} ({d}%)"
-	    },
-	    
-	    series : [
-	        {
-	            name: 'Amino acid Percentage',
-	            type: 'pie',
-	            radius : '55%',
-	            center: ['50%', '60%'],
-	            data: data,
-	            itemStyle: {
-	                emphasis: {
-	                    shadowBlur: 10,
-	                    shadowOffsetX: 0,
-	                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-	                }
-	            }
-	        }
-	    ]
-	};
 
-	percent_per_protein_chart.setOption(option);
-}
+
+
+
+
+
 
 
 // 获取某个特征的值，name=特征名称  features=特征列表 protein=单个蛋白的数据
