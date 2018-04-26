@@ -83,6 +83,7 @@ LOAD DATA LOCAL INFILE "feature_definitions" INTO TABLE feature_definitions FIEL
 LOAD DATA LOCAL INFILE "Protein_features" INTO TABLE protein_features FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n';
 LOAD DATA LOCAL INFILE 'uniprot.txt' INTO TABLE gene_to_uniprot;
 LOAD DATA LOCAL INFILE 'as.txt' INTO TABLE gene_as_events;
+LOAD DATA LOCAL INFILE 'pro_seq.fa' INTO TABLE protein_sequence (protein, sequence);
 ```
 
 
