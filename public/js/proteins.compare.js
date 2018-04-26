@@ -4,9 +4,10 @@
 */
 
 var DEFAULT_VALUE = '---';
-var C_LABLE_CLASS = 'label-info';
+var C_LABLE_CLASS = '';
 var H_LABLE_CLASS = 'label-warning';
 var E_LABEL_CLASS = 'label-primary';
+var COIL_LABEL_CLASS = 'label-info';
 
 /*
  *  渲染整个页面
@@ -75,7 +76,7 @@ function renderOneProtein(features, name, protein, col='col-md-12', new_row=fals
 	renderIsoElectricPoint(pdom_id, getFeatureValue('iso_electric_point', features, protein));
 	renderAliphaticIndex(pdom_id, getFeatureValue('aliphatic_index', features, protein));
 	renderSecondaryStructure(pdom_id, getFeatureValue('secondary_structure', features, protein), protein.sequence);
-	renderCoil(pdom_id, getFeatureValue('coil', features, protein));
+	renderCoil(pdom_id, getFeatureValue('coil', features, protein), protein.sequence);
 	renderLowComplexity(pdom_id, getFeatureValue('low_complexity', features, protein));
 	renderPEST(pdom_id, getFeatureValue('PEST', features, protein));
 	renderTransmember(pdom_id, getFeatureValue('transmember', features, protein));
@@ -225,6 +226,31 @@ function renderSecondaryStructure(pdom_id, ss, seq) {
 	$('#'+pdom_id).append('<div id="' + pdom_id + '_secondary_structure" class="text-center secondary-structure"><h4>Secondary Structure</h4><p class="feature-value">'+ ss +' </p></div>');
 }
 
+function renderCoil(pdom_id, coil, seq) {
+	if(coil === null) {
+		coil = DEFAULT_VALUE;
+	} else {
+		var html = '';
+		coils = coil.split(';');
+		
+		for(var i in seq){
+			var f = false;
+			for(var j in coils){
+				if(between(i+1, coils[j])){
+					f = true;
+					console.log(f)
+					break;
+				}
+			}
+			console.log(i)
+			// html += '<label class="' + (f ? COIL_LABEL_CLASS : '') + '">' + seq[i] + '</label>';
+		}
+
+		coil = html;
+	}
+	// C/E/H - start - end
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_coil" class="text-center coil"><h4>Coil</h4><p class="feature-value">'+ coil +' </p></div>');
+}
 
 function renderNGlycosylation(pdom_id, ng) {
 	if(ng === null) {ng = DEFAULT_VALUE;}
@@ -304,27 +330,55 @@ function renderLowComplexity(pdom_id, lc) {
 	$('#'+pdom_id).append('<div id="' + pdom_id + '_low_complexity+' + '" class="text-center lc"><h4>Low Complexity</h4><p class="feature-value">'+ lc  +' </p></div>');
 }
 
-function renderCoil(pdom_id, coil) {
-	if(coil === null) {coil = DEFAULT_VALUE;}
-	// C/E/H - start - end
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_secondary_structure+' + '" class="text-center coil"><h4>Coil</h4><p class="feature-value">'+ coil +' </p></div>');
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * 解析区间为数组
+ * @param  string interval 区间字符串，如‘73-89’
+ * @return array          
+ */
+function parseInterval(interval) {
+	if(interval.indexOf('-') == -1){
+		return [];
+	}
+	interval = interval.split('-');
+	min = parseInt(interval[0]);
+	max = parseInt(interval[1]);
+	var arr = [];
+	for(var i = min; i <= max; i++){
+		arr.push(i);
+	}
+	return arr;
 }
 
 
+/**
+ * 计算一个数值是否属于某个区间
+ * 
+ * @param  {[int]} needle   判断的数值
+ * @param  {[string]} interval 区间:min-max 如2-3
+ * @return {[boolean]}          
+ */
+function between(needle, interval) {
+	if(interval.indexOf('-') == -1){
+		return false;
+	}
+	needle = parseInt(needle);
+	interval = interval.split('-');
+	min = parseInt(interval[0]);
+	max = parseInt(interval[1]);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+	return needle >= min && needle <= max;
+}
 
 
 // 获取某个特征的值，name=特征名称  features=特征列表 protein=单个蛋白的数据
