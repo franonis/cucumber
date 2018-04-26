@@ -381,17 +381,17 @@ function renderPfam(pdom_id, pfam) {
 	if(pfam === null) {rows = '<tr><td colspan=4>No data available!</td></tr>';}
 
 	else {
-		prosite = prosite.split(';');
-		for(var i in prosite){
-			p = prosite[i].split('-');
-			rows += '<tr><td>'+p[0]+'</td><td>'+p[1]+'</td><td>'+p[2]+'</td><td>'+p[3]+'</td></tr>';
+		pfam = pfam.split(';');
+		for(var i in pfam){
+			p = pfam[i].split('-');
+			rows += '<tr><td>'+p[2]+'</td><td>'+p[3]+'</td><td>'+p[0]+'</td><td>'+p[1]+'</td><td>'+p[4]+'</td></tr>';
 		}
 	}
 
 	// start   end     no_pfam domain_name     p-value
 	var table_head = '<table class="table table-hover"><thead><tr><th>Pfam ID</th><th>Domain</th><th>Start</th><th>End</th><th>p-value</th></thead>'
 	var table_body = '<tbody>' + rows + '</tbody>';
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_pfam+' + '" class="text-center prosite"><h4>Prosite</h4><div class="feature-value">'+table_head + table_body +' </table></div></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_pfam+' + '" class="text-center pfam"><h4>Prosite</h4><div class="feature-value">'+table_head + table_body +' </table></div></div>');
 }
 
 

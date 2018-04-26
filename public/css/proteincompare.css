@@ -61,11 +61,20 @@
 	overflow: scroll;
 }
 
-.pca .prosite table td {
+.pca .prosite table td,th {
 	vertical-align: middle;
 }
 
 .pca .prosite .feature-value {
+	height: 15em;
+	overflow: scroll;
+}
+
+.pca .pfam table td,th {
+	vertical-align: middle;
+}
+
+.pca .pfam .feature-value {
 	height: 15em;
 	overflow: scroll;
 }
