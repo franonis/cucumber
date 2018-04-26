@@ -1,0 +1,39 @@
+.pca .percent_per_protein {
+	width: 100%;
+	height: 400px;
+}
+
+.pca .sequence-length {
+	width: 100%;
+	height: 4em;
+}
+
+.pca .molecular-weight {
+	width: 100%;
+	height: 4em;
+}
+
+.pca .gravy {
+	width: 100%;
+	height: 4em;
+}
+
+.pca .charge {
+	width: 100%;
+	height: 4em;
+}
+
+.pca .mec {
+	width: 100%;
+	height: 4em;
+}
+
+.pca .iep {
+	width: 100%;
+	height: 4em;
+}
+
+.pca .ai {
+	width: 100%;
+	height: 4em;
+}

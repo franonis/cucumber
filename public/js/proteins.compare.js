@@ -91,135 +91,143 @@ function renderOneProtein(features, name, protein, col='col-md-12', new_row=fals
 	}
 }
 
+function renderSequenceLength(pdom_id, length) {
+	if(length === null) {length = DEFAULT_VALUE;}
+	$('#'+pdom_id).append(
+		'<div id="' + pdom_id + '_sequence_length'+'" class="text-center sequence-length">'+
+		'<h4>Protein Length</h4><p class="feature-value">'+length+
+		' bp <a class="button button-tiny" href="/protein/'+ pdom_id.replace('_', '.') +'/sequence/download"><i class="fa fa-download"></i> FASTA</a></p>' +
+		'</div>'
+	);
+}
+
+
 function renderNGlycosylation(pdom_id, ng) {
 	if(ng === null) {ng = DEFAULT_VALUE;}
 	// "site-type"
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_N_Glycosylation+' + '" class="text-center"><h4>N Glycosylation</h4><p class="feature-value">'+ ng  +' bp</p></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_N_Glycosylation+' + '" class="text-center N_Glycosylation"><h4>N Glycosylation</h4><p class="feature-value">'+ ng  +' bp</p></div>');
 }
 
 function renderOGlycosylation(pdom_id, og) {
 	if(og === null) {og = DEFAULT_VALUE;}
 	// "site-type"
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_O_Glycosylation+' + '" class="text-center"><h4>O Glycosylation</h4><p class="feature-value">'+ og  +' bp</p></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_O_Glycosylation+' + '" class="text-center O_Glycosylation"><h4>O Glycosylation</h4><p class="feature-value">'+ og  +' bp</p></div>');
 }
 
 function renderNetphos(pdom_id, netphos) {
 	if(netphos === null) {netphos = DEFAULT_VALUE;}
 	// "site-type"
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_netphos+' + '" class="text-center"><h4>Netphos</h4><p class="feature-value">'+ netphos  +' </p></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_netphos+' + '" class="text-center netphos"><h4>Netphos</h4><p class="feature-value">'+ netphos  +' </p></div>');
 }
 
 function renderLocation(pdom_id, location) {
 	if(location === null) {location = DEFAULT_VALUE;}
 	// "Cytoplasm-Nucleus-Peroxisome-Mitochondrion-Chloroplast-Golgi_apparatus-Vacuole-Plasma_membrane-ER-Extracellular_space"
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_location+' + '" class="text-center"><h4>location</h4><p class="feature-value">'+ location  +' </p></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_location+' + '" class="text-center location"><h4>location</h4><p class="feature-value">'+ location  +' </p></div>');
 }
 
 function renderSignalp(pdom_id, signalp) {
 	if(signalp === null) {signalp = DEFAULT_VALUE;}
 	// start - end
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_signalp+' + '" class="text-center"><h4>Signalp</h4><p class="feature-value">'+ signalp  +' </p></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_signalp+' + '" class="text-center signalp"><h4>Signalp</h4><p class="feature-value">'+ signalp  +' </p></div>');
 }
 
 function renderKEGG(pdom_id, kegg) {
 	if(kegg === null) {kegg = DEFAULT_VALUE;}
 	// start - end
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_kegg+' + '" class="text-center"><h4>KEGG</h4><p class="feature-value">'+ kegg  +' </p></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_kegg+' + '" class="text-center kegg"><h4>KEGG</h4><p class="feature-value">'+ kegg  +' </p></div>');
 }
 
 function renderProteinFunction(pdom_id, pf) {
 	if(pf === null) {pf = DEFAULT_VALUE;}
 	// start - end
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_protein_function+' + '" class="text-center"><h4>Protein Function</h4><p class="feature-value">'+ pf  +' </p></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_protein_function+' + '" class="text-center protein_function"><h4>Protein Function</h4><p class="feature-value">'+ pf  +' </p></div>');
 }
 
 function renderPfam(pdom_id, pfam) {
 	if(pfam === null) {pfam = DEFAULT_VALUE;}
 	// start - end
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_pfam+' + '" class="text-center"><h4>Pfam</h4><p class="feature-value">'+ pfam  +' </p></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_pfam+' + '" class="text-center pfam"><h4>Pfam</h4><p class="feature-value">'+ pfam  +' </p></div>');
 }
 
 function renderProsite(pdom_id, prosite) {
 	if(prosite === null) {prosite = DEFAULT_VALUE;}
 	// start - end
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_prosite+' + '" class="text-center"><h4>Prosite</h4><p class="feature-value">'+ prosite  +' </p></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_prosite+' + '" class="text-center prosite"><h4>Prosite</h4><p class="feature-value">'+ prosite  +' </p></div>');
 }
 
 function renderDisorder(pdom_id, disorder) {
 	if(disorder === null) {disorder = DEFAULT_VALUE;}
 	// start - end
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_disorder+' + '" class="text-center"><h4>Disorder</h4><p class="feature-value">'+ disorder  +' </p></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_disorder+' + '" class="text-center disorder"><h4>Disorder</h4><p class="feature-value">'+ disorder  +' </p></div>');
 }
 
 function renderTransmember(pdom_id, transmember) {
 	if(transmember === null) {transmember = DEFAULT_VALUE;}
 	// start - end
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_transmember+' + '" class="text-center"><h4>Transmember</h4><p class="feature-value">'+ transmember  +' </p></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_transmember+' + '" class="text-center transmember"><h4>Transmember</h4><p class="feature-value">'+ transmember  +' </p></div>');
 }
 
 function renderPEST(pdom_id, pest) {
 	if(pest === null) {pest = DEFAULT_VALUE;}
 	// start - end
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_pest+' + '" class="text-center"><h4>PEST</h4><p class="feature-value">'+ pest  +' </p></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_pest+' + '" class="text-center pest"><h4>PEST</h4><p class="feature-value">'+ pest  +' </p></div>');
 }
 
 function renderLowComplexity(pdom_id, lc) {
 	if(lc === null) {lc = DEFAULT_VALUE;}
 	// start - end
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_low_complexity+' + '" class="text-center"><h4>Low Complexity</h4><p class="feature-value">'+ lc  +' </p></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_low_complexity+' + '" class="text-center lc"><h4>Low Complexity</h4><p class="feature-value">'+ lc  +' </p></div>');
 }
 
 function renderCoil(pdom_id, coil) {
 	if(coil === null) {coil = DEFAULT_VALUE;}
 	// C/E/H - start - end
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_secondary_structure+' + '" class="text-center"><h4>Coil</h4><p class="feature-value">'+ coil +' </p></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_secondary_structure+' + '" class="text-center coil"><h4>Coil</h4><p class="feature-value">'+ coil +' </p></div>');
 }
 
 function renderSecondaryStructure(pdom_id, ss) {
 	if(ss === null) {ss = DEFAULT_VALUE;}
 	// C/E/H - start - end
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_secondary_structure+' + '" class="text-center"><h4>Secondary Structure</h4><p class="feature-value">'+ ss +' </p></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_secondary_structure+' + '" class="text-center secondary-structure"><h4>Secondary Structure</h4><p class="feature-value">'+ ss +' </p></div>');
 }
 
 function renderAliphaticIndex(pdom_id, ai) {
 	if(ai === null) {ai = DEFAULT_VALUE;}
 	ai = ai.substr(0, ai.indexOf(".") + 4);  // 保留小数后3位
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_aliphatic_index+' + '" class="text-center"><h4>Aliphatic Index</h4><p class="feature-value">'+ ai +' </p></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_aliphatic_index+' + '" class="text-center ai"><h4>Aliphatic Index</h4><p class="feature-value">'+ ai +' </p></div>');
 }
 
 function renderIsoElectricPoint(pdom_id, iep) {
 	if(iep === null) {iep = DEFAULT_VALUE;}
 	iep = iep.substr(0, iep.indexOf(".") + 4);  // 保留小数后3位
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_iso_electric_point+' + '" class="text-center"><h4>Iso Electric Point</h4><p class="feature-value">'+ iep +' </p></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_iso_electric_point+' + '" class="text-center iep"><h4>Iso Electric Point</h4><p class="feature-value">'+ iep +' </p></div>');
 }
 
 function renderMolarExtinctionCoefficient(pdom_id, mec) {
 	if(mec === null) {mec = DEFAULT_VALUE;}
 	mec = mec.substr(0, mec.indexOf(".") + 4);  // 保留小数后3位
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_molar_extinction_coefficient+' + '" class="text-center"><h4>Molar Extinction Coefficient</h4><p class="feature-value">'+ mec +' </p></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_molar_extinction_coefficient+' + '" class="text-center mec"><h4>Molar Extinction Coefficient</h4><p class="feature-value">'+ mec +' </p></div>');
 }
 
 function renderCharge(pdom_id, charge) {
 	if(charge === null) {charge = DEFAULT_VALUE;}
 	charge = charge.substr(0, charge.indexOf(".") + 4);  // 保留小数后3位
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_charge+' + '" class="text-center"><h4>Charge</h4><p class="feature-value">'+ charge +' </p></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_charge+' + '" class="text-center charge"><h4>Charge</h4><p class="feature-value">'+ charge +' </p></div>');
 }
 
 function renderGravy(pdom_id, gravy) {
 	if(gravy === null) {gravy = DEFAULT_VALUE;}
 	gravy = gravy.substr(0, gravy.indexOf(".") + 4);  // 保留小数后3位
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_gravy+' + '" class="text-center"><h4>Gravy</h4><p class="feature-value">'+ gravy +' </p></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_gravy+' + '" class="text-center gravy"><h4>Gravy</h4><p class="feature-value">'+ gravy +' </p></div>');
 }
 
 function renderMolecularWeight(pdom_id, weight) {
 	if(weight === null) {weight = DEFAULT_VALUE;}
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_molecular_weight'+'" class="text-center"><h4>Molecular Weight</h4><p class="feature-value">'+ weight+' </p></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_molecular_weight'+'" class="text-center molecular-weight"><h4>Molecular Weight</h4><p class="feature-value">'+ weight+' </p></div>');
 }
 
-function renderSequenceLength(pdom_id, length) {
-	if(length === null) {length = DEFAULT_VALUE;}
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_sequence_length'+'" class="text-center"><h4>Protein Length</h4><p class="feature-value">'+length+' bp</p></div>');
-}
+
 
 
 
@@ -228,14 +236,14 @@ function renderPercentPerProtein(pdom_id, value, features) {
 	var amino_acids  = getFeatureInfo(feature_name, features); amino_acids = amino_acids['comment'].split('-');
 
 	if(value === null){
-		$('#'+pdom_id).append('<div id="' + pdom_id + '_percent_per_protein" class="text-center"><h4>Amino acid Percentage In the Protein</h4><p class="feature-value">'+DEFAULT_VALUE+'</p></div>');
+		$('#'+pdom_id).append('<div id="' + pdom_id + '_percent_per_protein" class="text-center percent_per_protein"><h4>Amino acid Percentage In the Protein</h4><p class="feature-value">'+DEFAULT_VALUE+'</p></div>');
 		return;
 	}
 
 	value = value.split('-');
 	feature_name = feature_name.replace(/\_/, ' ').toUpperCase();
 
-	$('#'+ pdom_id).append('<div id="' + feature_name + '_' + pdom_id + '" style="width: 100%;height:400px;"></div>');
+	$('#'+ pdom_id).append('<div id="' + feature_name + '_' + pdom_id + '" class="percent_per_protein"></div>');
 	
 	data = [];
 	for(i in amino_acids){
@@ -255,7 +263,7 @@ function renderPercentPerProtein(pdom_id, value, features) {
 	    
 	    series : [
 	        {
-	            name: 'Amino acid Percentage In the Protein',
+	            name: 'Amino acid Percentage',
 	            type: 'pie',
 	            radius : '55%',
 	            center: ['50%', '60%'],

@@ -13,3 +13,4 @@ yarn-error.log
 /storage/debugbar
 .DS_Store
 rsync.sh
+raw_data
