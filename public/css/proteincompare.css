@@ -78,3 +78,25 @@
 	height: 15em;
 	overflow: scroll;
 }
+
+.pca .protein-function table td,th {
+	vertical-align: middle;
+}
+
+.pca .protein-function .feature-value {
+	height: 15em;
+	overflow: scroll;
+}
+
+.pca .kegg table td,th {
+	vertical-align: middle;
+}
+
+.pca .kegg .feature-value {
+	height: 15em;
+	overflow: scroll;
+}
+
+.pca .signalp {
+	height: 4em;
+}

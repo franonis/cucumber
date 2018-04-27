@@ -395,29 +395,40 @@ function renderPfam(pdom_id, pfam) {
 }
 
 
-function renderNGlycosylation(pdom_id, ng) {
-	if(ng === null) {ng = DEFAULT_VALUE;}
+function renderProteinFunction(pdom_id, pf) {
+	var rows = '';
+	if(pf === null) {rows = '<tr><td colspan=4>No data available!</td></tr>';}
+	else {
+		pf = pf.split(';');
+		for(var i in pf){
+			p = pf[i].split('-');
+			go = p.shift();
+			asp = p.shift();
+			desc = p.join(' ');
+			rows += '<tr><td>'+ go +'</td><td>'+ go +'</td><td class="text-left">'+ desc +'</td></tr>';
+		}
+	}
 
-	// "site-type"
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_N_Glycosylation+' + '" class="text-center N_Glycosylation"><h4>N Glycosylation</h4><div class="feature-value">'+ ng  +' bp</div></div>');
+	var table_head = '<table class="table table-hover"><thead><tr><th>GO ID</th><th>Aspect</th><th>Protein Function</th></thead>'
+	var table_body = '<tbody>' + rows + '</tbody>';
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_protein_function" class="text-center protein-function"><h4>Protein Function</h4><div class="feature-value">'+table_head + table_body +' </table></div></div>');
 }
 
-function renderOGlycosylation(pdom_id, og) {
-	if(og === null) {og = DEFAULT_VALUE;}
-	// "site-type"
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_O_Glycosylation+' + '" class="text-center O_Glycosylation"><h4>O Glycosylation</h4><div class="feature-value">'+ og  +' bp</div></div>');
-}
-
-function renderNetphos(pdom_id, netphos) {
-	if(netphos === null) {netphos = DEFAULT_VALUE;}
-	// "site-type"
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_netphos+' + '" class="text-center netphos"><h4>Netphos</h4><div class="feature-value">'+ netphos  +' </div></div>');
-}
-
-function renderLocation(pdom_id, location) {
-	if(location === null) {location = DEFAULT_VALUE;}
-	// "Cytoplasm-Nucleus-Peroxisome-Mitochondrion-Chloroplast-Golgi_apparatus-Vacuole-Plasma_membrane-ER-Extracellular_space"
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_location+' + '" class="text-center location"><h4>location</h4><div class="feature-value">'+ location  +' </div></div>');
+function renderKEGG(pdom_id, kegg) {
+	var rows = '';
+	if(kegg === null) {rows = '<tr><td colspan=4>No data available!</td></tr>';}
+	else {
+		kegg = kegg.split(';');
+		for(var i in kegg){
+			p = kegg[i].split('-');
+			id = p.shift();
+			desc = p.join(' ');
+			rows += '<tr><td>'+ id +'</td><td class="text-left">'+ desc +'</td></tr>';
+		}
+	}
+	var table_head = '<table class="table table-hover"><thead><tr><th>ID</th><th>Pathway</th></thead>'
+	var table_body = '<tbody>' + rows + '</tbody>';
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_kegg" class="text-center kegg"><h4>KEGG</h4><div class="feature-value">'+table_head + table_body +' </table></div></div>');
 }
 
 function renderSignalp(pdom_id, signalp) {
@@ -426,33 +437,35 @@ function renderSignalp(pdom_id, signalp) {
 	$('#'+pdom_id).append('<div id="' + pdom_id + '_signalp+' + '" class="text-center signalp"><h4>Signalp</h4><div class="feature-value">'+ signalp  +' </div></div>');
 }
 
-function renderKEGG(pdom_id, kegg) {
-	if(kegg === null) {kegg = DEFAULT_VALUE;}
-	// start - end
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_kegg+' + '" class="text-center kegg"><h4>KEGG</h4><div class="feature-value">'+ kegg  +' </div></div>');
-}
 
-function renderProteinFunction(pdom_id, pf) {
-	if(pf === null) {pf = DEFAULT_VALUE;}
-	// start - end
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_protein_function+' + '" class="text-center protein_function"><h4>Protein Function</h4><div class="feature-value">'+ pf  +' </div></div>');
+function renderLocation(pdom_id, location) {
+	if(location === null) {location = DEFAULT_VALUE;}
+	// "Cytoplasm-Nucleus-Peroxisome-Mitochondrion-Chloroplast-Golgi_apparatus-Vacuole-Plasma_membrane-ER-Extracellular_space"
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_location+' + '" class="text-center location"><h4>location</h4><div class="feature-value">'+ location  +' </div></div>');
 }
 
 
+function renderNetphos(pdom_id, netphos) {
+	if(netphos === null) {netphos = DEFAULT_VALUE;}
+	// "site-type"
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_netphos+' + '" class="text-center netphos"><h4>Netphos</h4><div class="feature-value">'+ netphos  +' </div></div>');
+}
+
+function renderOGlycosylation(pdom_id, og) {
+	if(og === null) {og = DEFAULT_VALUE;}
+	// "site-type"
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_O_Glycosylation+' + '" class="text-center O_Glycosylation"><h4>O Glycosylation</h4><div class="feature-value">'+ og  +' bp</div></div>');
+}
 
 
 
+function renderNGlycosylation(pdom_id, ng) {
+	if(ng === null) {ng = DEFAULT_VALUE;}
+	text = '<p>Location: ' + ng + '</p>';
 
-
-
-
-
-
-
-
-
-
-
+	// "site-type"
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_N_Glycosylation+' + '" class="text-center N_Glycosylation"><h4>N Glycosylation</h4><div class="feature-value">'+ ng  +' bp</div></div>');
+}
 
 
 
