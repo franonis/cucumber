@@ -90,7 +90,7 @@ function renderOneProtein(features, name, protein, col='col-md-12', new_row=fals
 	renderPfam(pdom_id, getFeatureValue('pfam', features, protein));
 	renderProteinFunction(pdom_id, getFeatureValue('protein_function', features, protein));
 	renderKEGG(pdom_id, getFeatureValue('kegg', features, protein));
-	renderSignalp(pdom_id, getFeatureValue('signalp', features, protein));
+	renderSignalp(pdom_id, getFeatureValue('signalp', features, protein), features);
 	renderLocation(pdom_id, getFeatureValue('location', features, protein));
 	renderNetphos(pdom_id, getFeatureValue('netphos', features, protein));
 	renderOGlycosylation(pdom_id, getFeatureValue('O_Glycosylation', features, protein));
@@ -115,7 +115,7 @@ function renderPercentPerProtein(pdom_id, value, features) {
 
 	$('#'+ pdom_id).append('<div id="' + feature_name + '_' + pdom_id + '" class="percent_per_protein"></div>');
 	
-	data = [];
+	var data = [];
 	for(i in amino_acids){
 		data.push({value: value[i], name: amino_acids[i]})
 	}
@@ -127,8 +127,8 @@ function renderPercentPerProtein(pdom_id, value, features) {
 	        x: 'center'
 	    },
 	    tooltip : {
-	        trigger: 'Amino acid',
-	        formatter: "{a} <br/>{b} : {c} ({d}%)"
+	        trigger: 'item',
+	        formatter: "{b}: {d}%"
 	    },
 	    
 	    series : [
@@ -439,9 +439,61 @@ function renderSignalp(pdom_id, signalp) {
 
 
 function renderLocation(pdom_id, location) {
-	if(location === null) {location = DEFAULT_VALUE;}
-	// "Cytoplasm-Nucleus-Peroxisome-Mitochondrion-Chloroplast-Golgi_apparatus-Vacuole-Plasma_membrane-ER-Extracellular_space"
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_location+' + '" class="text-center location"><h4>location</h4><div class="feature-value">'+ location  +' </div></div>');
+	var feature_name = 'location';
+
+	if(location === null){
+		$('#'+pdom_id).append('<div id="' + pdom_id + '_location" class="text-center location"><h4>Location Probability Distribution</h4><p class="feature-value">'+DEFAULT_VALUE+'</p></div>');
+		return;
+	}
+
+
+	$('#'+ pdom_id).append('<div id="' + feature_name + '_' + pdom_id + '" class="location"></div>');
+
+	location = location.split('-');
+
+	location = [
+		{name: 'Cytoplasm', value: location[0]},
+		{name: 'Nucleus', value: location[1]},
+		{name: 'Peroxisome', value: location[2]},
+		{name: 'Mitochondrion', value: location[3]},
+		{name: 'Chloroplast', value: location[4]},
+		{name: 'Golgi apparatus', value: location[5]},
+		{name: 'Vacuole', value: location[6]},
+		{name: 'Plasma membrane', value: location[7]},
+		{name: 'ER', value: location[8]},
+		{name: 'Extracellular space', value: location[9]}
+	];
+	
+	var location_chart = echarts.init(document.getElementById(feature_name + '_' + pdom_id));
+	var option = {
+	    title : {
+	        text: 'Location Probability Distribution',
+	        x: 'center'
+	    },
+	    tooltip : {
+	        trigger: 'item',
+	        formatter: "{b} : {d}%"
+	    },
+	    
+	    series : [
+	        {
+	            name: 'Location Probability Distribution',
+	            type: 'pie',
+	            radius : '55%',
+	            center: ['50%', '60%'],
+	            data: location,
+	            itemStyle: {
+	                emphasis: {
+	                    shadowBlur: 10,
+	                    shadowOffsetX: 0,
+	                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+	                }
+	            }
+	        }
+	    ]
+	};
+
+	location_chart.setOption(option);
 }
 
 

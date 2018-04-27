@@ -100,3 +100,14 @@
 .pca .signalp {
 	height: 4em;
 }
+
+.pca .location .feature-value {
+	height: 15em;
+	padding-left: 6em;
+	overflow: scroll;
+}
+
+.pca .location {
+	widows: 100%;
+	height: 400px;
+}
