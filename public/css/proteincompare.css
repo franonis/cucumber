@@ -111,3 +111,22 @@
 	widows: 100%;
 	height: 400px;
 }
+
+.pca .netphos table td,th {
+	vertical-align: middle;
+}
+
+.pca .netphos .feature-value {
+	height: 15em;
+	overflow: scroll;
+}
+
+.pca .N-Glycosylation .feature-value {
+	height: 15em;
+	overflow: scroll;
+}
+
+.pca .O-Glycosylation .feature-value {
+	height: 15em;
+	overflow: scroll;
+}

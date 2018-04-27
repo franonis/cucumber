@@ -14,6 +14,10 @@ var INTRACELLULAR_LABEL_CLASS = 'label-warning';
 var EXTRACELLULAR_LABEL_CLASS = 'label-info';
 var TRANSMEMBRANE_HELIX_LABEL_CLASS = 'label-danger';
 var DISORDER_LABEL_CLASS= 'label-danger';
+var NG_LABEL_CLASS = 'label-danger';
+var OG_LABEL_CLASS = 'label-danger';
+
+
 /*
  *  渲染整个页面
  */
@@ -93,8 +97,8 @@ function renderOneProtein(features, name, protein, col='col-md-12', new_row=fals
 	renderSignalp(pdom_id, getFeatureValue('signalp', features, protein), features);
 	renderLocation(pdom_id, getFeatureValue('location', features, protein));
 	renderNetphos(pdom_id, getFeatureValue('netphos', features, protein));
-	renderOGlycosylation(pdom_id, getFeatureValue('O_Glycosylation', features, protein));
-	renderNGlycosylation(pdom_id, getFeatureValue('N_Glycosylation', features, protein));
+	renderOGlycosylation(pdom_id, getFeatureValue('O_Glycosylation', features, protein), protein.sequence);
+	renderNGlycosylation(pdom_id, getFeatureValue('N_Glycosylation', features, protein), protein.sequence);
 }
 
 /*
@@ -498,25 +502,75 @@ function renderLocation(pdom_id, location) {
 
 
 function renderNetphos(pdom_id, netphos) {
-	if(netphos === null) {netphos = DEFAULT_VALUE;}
-	// "site-type"
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_netphos+' + '" class="text-center netphos"><h4>Netphos</h4><div class="feature-value">'+ netphos  +' </div></div>');
+	var rows = '';
+	if(netphos === null) {rows = '<tr><td colspan=2>No data available!</td></tr>';}
+	else {
+		netphos = netphos.split(';');
+		for(var i in netphos){
+			p = netphos[i].split('-');
+			loc = p.shift();
+			type = p.join(' ').replace(/~/g, ' / ');
+			rows += '<tr><td>'+ loc +'</td><td class="text-left">'+ type +'</td></tr>';
+		}
+	}
+
+	var table_head = '<table class="table table-hover"><thead><tr><th>ID</th><th>Pathway</th></thead>'
+	var table_body = '<tbody>' + rows + '</tbody>';
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_netphos" class="text-center netphos"><h4>Netphos</h4><div class="feature-value">'+table_head + table_body +' </table></div></div>');
 }
 
-function renderOGlycosylation(pdom_id, og) {
+function renderOGlycosylation(pdom_id, og, seq) {
 	if(og === null) {og = DEFAULT_VALUE;}
+	else {
+		
+		var html = '<p>Location: ' + og.replace(';', ', ') + '</p><p class="text-left">';
+		og = og.split(';');
+		var locus = [];
+		for(var n in og){
+			locus.push(parseInt(og[n]));
+		}
+
+		for(var i in seq){
+			if(arrayContains(locus, parseInt(i)+1)){
+				html += '<label class="'+ OG_LABEL_CLASS +'">' + seq[i] + '</label>';
+			} else {
+				html += '<label>' + seq[i] + '</label>';
+			}
+		}
+
+		og = html + '</p>';
+	}
+
 	// "site-type"
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_O_Glycosylation+' + '" class="text-center O_Glycosylation"><h4>O Glycosylation</h4><div class="feature-value">'+ og  +' bp</div></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_O_Glycosylation" class="text-center O-Glycosylation"><h4>O Glycosylation</h4><div class="feature-value">'+ og  +' bp</div></div>');
 }
 
 
 
-function renderNGlycosylation(pdom_id, ng) {
+function renderNGlycosylation(pdom_id, ng, seq) {
 	if(ng === null) {ng = DEFAULT_VALUE;}
-	text = '<p>Location: ' + ng + '</p>';
+	else {
+		
+		var html = '<p>Location: ' + ng.replace(';', ', ') + '</p><p class="text-left">';
+		ng = ng.split(';');
+		var locus = [];
+		for(var n in ng){
+			locus.push(parseInt(ng[n]));
+		}
+
+		for(var i in seq){
+			if(arrayContains(locus, parseInt(i)+1)){
+				html += '<label class="'+ NG_LABEL_CLASS +'">' + seq[i] + '</label>';
+			} else {
+				html += '<label>' + seq[i] + '</label>';
+			}
+		}
+
+		ng = html + '</p>';
+	}
 
 	// "site-type"
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_N_Glycosylation+' + '" class="text-center N_Glycosylation"><h4>N Glycosylation</h4><div class="feature-value">'+ ng  +' bp</div></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_N_Glycosylation" class="text-center N-Glycosylation"><h4>N Glycosylation</h4><div class="feature-value">'+ ng  +' bp</div></div>');
 }
 
 
