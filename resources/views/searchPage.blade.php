@@ -35,7 +35,7 @@
                 <br>
             </div>
 
-            <h4>2. Input the Target:</h4>
+            <h4>2. Input the gene/protein:</h4>
             <div class="col-md-12">
                 <input type="text" name="query" class="form-control" placeholder="e.g. Csa4G338980"  autocomplete="on" style="width:200px; display:inline-block !important" required>&nbsp;&nbsp;
                 <small>Example:
@@ -52,18 +52,16 @@
         <hr>
         <br><br>
         <div class="panel panel-info namebox">
-            <div class="panel-heading"><h4>B. Search by region</h4></div>
+            <div class="panel-heading"><h4>B. Search by chromosome region</h4></div>
             <div class="panel-body">
                 <form id="regionform" action="{{ url('./search') }}" method="post">
                     {{ csrf_field() }}
                     <div class="col-md-12 form-inline">
-                        <h4 class="text-primary">1. Choose the chr and input the region</h4>
-                            </div>
                         <div class="row">
                             <div class="col-md-2">
                                 <label>Chr: </label>
                                 <select name="chr" id="chr" class="form-control">
-                                    <option value="Chr1">Chr1</option>
+                                    <option value="Chr1" selected="selected">Chr1</option>
                                     <option value="Chr2">Chr2</option>
                                     <option value="Chr3">Chr3</option>
                                     <option value="Chr4">Chr4</option>
@@ -75,16 +73,16 @@
                             <input type="text" name="type" value="location" style="display: none;">
                             <div class="col-md-3">
                                 <label> Start: </label>
-                                <input type="number" id="start" name="start" class="form-control" min="0" placeholder=" > 0">
+                                <input type="number" id="start" name="start" class="form-control" min="0" placeholder=" > 0" value="14021919">
                             </div>
                             <div class="col-md-3">
                                 <label>End: </label>
-                                <input type="number" id="end" name="end" style="min-width: 150px" class="form-control" min="0">
+                                <input type="number" id="end" name="end" style="min-width: 150px" class="form-control" min="0" value="14036507">
                             </div>
                         </div>
-                        <hr>
                     </div>
-                    <div class="text-center">
+                    <div class="text-center col-md-12">
+                        <p></p>
                         <button type="submit" class="button button-rounded button-primary pull-center">Search</button><br>
                     </div><br>
                 </form>

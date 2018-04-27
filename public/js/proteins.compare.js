@@ -61,10 +61,15 @@ function renderMulProteins(features, proteins, count) {
 	var col = count == 2 ? 'col-md-6' : 'col-md-4';
 
 	var new_row_flag = 0;
+	var i = 0;
 	for(name in proteins){
+		i++;
 		new_row_flag ++;
 		new_row = (new_row_flag % 3 == 0) ? true : false;
 		renderOneProtein(features, name, proteins[name], col, new_row);
+		 if(i % 3 == 0 && i){
+		 	$('#pca').append('<div class="col-md-12"><hr></div>');
+		 }
 	}
 }
 
@@ -77,13 +82,17 @@ function renderOneProtein(features, name, protein, col='col-md-12', new_row=fals
 	$('#'+ pdom_id).append('<h3 class="protein_title">'+ name + '</h3>');
 
 	renderPercentPerProtein(pdom_id, getFeatureValue('percent_per_protein', features, protein) , features);
-	renderSequenceLength(pdom_id, getFeatureValue('sequence_length', features, protein), name);
-	renderMolecularWeight(pdom_id, getFeatureValue('molecular_weight', features, protein));
-	renderGravy(pdom_id, getFeatureValue('gravy', features, protein));
-	renderCharge(pdom_id, getFeatureValue('charge', features, protein));
-	renderMolarExtinctionCoefficient(pdom_id, getFeatureValue('molar_extinction_coefficient', features, protein));
-	renderIsoElectricPoint(pdom_id, getFeatureValue('iso_electric_point', features, protein));
-	renderAliphaticIndex(pdom_id, getFeatureValue('aliphatic_index', features, protein));
+
+	renderSimpleFeature(pdom_id, features, protein, name);
+
+	// renderSequenceLength(pdom_id, getFeatureValue('sequence_length', features, protein), name);
+	// renderMolecularWeight(pdom_id, getFeatureValue('molecular_weight', features, protein));
+	// renderGravy(pdom_id, getFeatureValue('gravy', features, protein));
+	// renderCharge(pdom_id, getFeatureValue('charge', features, protein));
+	// renderMolarExtinctionCoefficient(pdom_id, getFeatureValue('molar_extinction_coefficient', features, protein));
+	// renderIsoElectricPoint(pdom_id, getFeatureValue('iso_electric_point', features, protein));
+	// renderAliphaticIndex(pdom_id, getFeatureValue('aliphatic_index', features, protein));
+
 	renderSecondaryStructure(pdom_id, getFeatureValue('secondary_structure', features, protein), protein.sequence);
 	renderCoil(pdom_id, getFeatureValue('coil', features, protein), protein.sequence);
 	renderLowComplexity(pdom_id, getFeatureValue('low_complexity', features, protein), protein.sequence);
@@ -99,6 +108,24 @@ function renderOneProtein(features, name, protein, col='col-md-12', new_row=fals
 	renderNetphos(pdom_id, getFeatureValue('netphos', features, protein));
 	renderOGlycosylation(pdom_id, getFeatureValue('O_Glycosylation', features, protein), protein.sequence);
 	renderNGlycosylation(pdom_id, getFeatureValue('N_Glycosylation', features, protein), protein.sequence);
+}
+
+
+function renderSimpleFeature(pdom_id, features, protein, name) {
+	var length = getFeatureValue('sequence_length', features, protein); length = length ? length : DEFAULT_VALUE;
+	var molecular_weight = getFeatureValue('molecular_weight', features, protein); molecular_weight = molecular_weight ? molecular_weight  : DEFAULT_VALUE;
+	var gravy = getFeatureValue('gravy', features, protein); gravy = gravy ? gravy.substr(0, gravy.indexOf(".") + 4) : DEFAULT_VALUE;
+	var charge = getFeatureValue('charge', features, protein); charge = charge ? charge.substr(0, charge.indexOf(".") + 4) : DEFAULT_VALUE;
+	var mec = getFeatureValue('molar_extinction_coefficient', features, protein); mec = mec ? mec.substr(0, mec.indexOf(".") + 4) : DEFAULT_VALUE;
+
+	var rows = '<tr><td>Protein Length</td><td>' + length + '</td></tr>';
+	rows += '<tr><td>Molecular Weight</td><td>' + molecular_weight + '</td></tr>';
+	rows += '<tr><td>Grave</td><td>' + gravy + '</td></tr>';
+	rows += '<tr><td>Charge</td><td>' + charge + '</td></tr>';
+	rows += '<tr><td>Molar Extinction Coefficient</td><td>' + mec + '</td></tr>';
+
+	var table = '<table class="table table-hover"><thead><tr><th>Feature</th><th>Value</th></tr></thead><tbody>'+rows+'</tbody></table>';
+	$('#'+pdom_id).append(table);
 }
 
 /*
@@ -155,7 +182,6 @@ function renderPercentPerProtein(pdom_id, value, features) {
 
 	percent_per_protein_chart.setOption(option);
 }
-
 function renderSequenceLength(pdom_id, length, name) {
 	if(length === null) {
 		length = DEFAULT_VALUE;
@@ -168,24 +194,20 @@ function renderSequenceLength(pdom_id, length, name) {
 		'</div>'
 	);
 }
-
 function renderMolecularWeight(pdom_id, weight) {
 	if(weight === null) {weight = DEFAULT_VALUE;}
 	$('#'+pdom_id).append('<div id="' + pdom_id + '_molecular_weight" class="text-center molecular-weight"><h4>Molecular Weight</h4><div class="feature-value">'+ weight+' </div></div>');
 }
-
 function renderGravy(pdom_id, gravy) {
 	if(gravy === null) {gravy = DEFAULT_VALUE;}
 	gravy = gravy.substr(0, gravy.indexOf(".") + 4);  // 保留小数后3位
 	$('#'+pdom_id).append('<div id="' + pdom_id + '_gravy" class="text-center gravy"><h4>Gravy</h4><div class="feature-value">'+ gravy +' </div></div>');
 }
-
 function renderCharge(pdom_id, charge) {
 	if(charge === null) {charge = DEFAULT_VALUE;}
 	charge = charge.substr(0, charge.indexOf(".") + 4);  // 保留小数后3位
 	$('#'+pdom_id).append('<div id="' + pdom_id + '_charge+" class="text-center charge"><h4>Charge</h4><div class="feature-value">'+ charge +' </div></div>');
 }
-
 
 function renderMolarExtinctionCoefficient(pdom_id, mec) {
 	if(mec === null) {mec = DEFAULT_VALUE;}
@@ -377,7 +399,7 @@ function renderProsite(pdom_id, prosite) {
 	// prosite id, motif, start, end
 	var table_head = '<table class="table table-hover"><thead><tr><th>Prosite ID</th><th>Motif</th><th>Start</th><th>End</th></thead>'
 	var table_body = '<tbody>' + rows + '</tbody>';
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_prosite+' + '" class="text-center prosite"><h4>Prosite</h4><div class="feature-value">'+table_head + table_body +' </table></div></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_prosite+' + '" class="prosite"><h4 class="text-center">Prosite</h4><div class="feature-value">'+table_head + table_body +' </table></div></div>');
 }
 
 function renderPfam(pdom_id, pfam) {
@@ -395,7 +417,7 @@ function renderPfam(pdom_id, pfam) {
 	// start   end     no_pfam domain_name     p-value
 	var table_head = '<table class="table table-hover"><thead><tr><th>Pfam ID</th><th>Domain</th><th>Start</th><th>End</th><th>p-value</th></thead>'
 	var table_body = '<tbody>' + rows + '</tbody>';
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_pfam+' + '" class="text-center pfam"><h4>Prosite</h4><div class="feature-value">'+table_head + table_body +' </table></div></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_pfam+' + '" class="pfam"><h4 class="text-center">Pfam</h4><div class="feature-value">'+table_head + table_body +' </table></div></div>');
 }
 
 
@@ -415,7 +437,7 @@ function renderProteinFunction(pdom_id, pf) {
 
 	var table_head = '<table class="table table-hover"><thead><tr><th>GO ID</th><th>Aspect</th><th>Protein Function</th></thead>'
 	var table_body = '<tbody>' + rows + '</tbody>';
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_protein_function" class="text-center protein-function"><h4>Protein Function</h4><div class="feature-value">'+table_head + table_body +' </table></div></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_protein_function" class="protein-function"><h4 class="text-center">Protein Function</h4><div class="feature-value">'+table_head + table_body +' </table></div></div>');
 }
 
 function renderKEGG(pdom_id, kegg) {
@@ -432,13 +454,13 @@ function renderKEGG(pdom_id, kegg) {
 	}
 	var table_head = '<table class="table table-hover"><thead><tr><th>ID</th><th>Pathway</th></thead>'
 	var table_body = '<tbody>' + rows + '</tbody>';
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_kegg" class="text-center kegg"><h4>KEGG</h4><div class="feature-value">'+table_head + table_body +' </table></div></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_kegg" class="kegg"><h4 class="text-center">KEGG</h4><div class="feature-value">'+table_head + table_body +' </table></div></div>');
 }
 
 function renderSignalp(pdom_id, signalp) {
 	if(signalp === null) {signalp = DEFAULT_VALUE;}
 	// start - end
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_signalp+' + '" class="text-center signalp"><h4>Signalp</h4><div class="feature-value">'+ signalp  +' </div></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_signalp+' + '" class="signalp"><h4 class="text-center">Signalp</h4><div class="feature-value text-center">Location: '+ signalp  +'</div></div>');
 }
 
 
@@ -446,7 +468,7 @@ function renderLocation(pdom_id, location) {
 	var feature_name = 'location';
 
 	if(location === null){
-		$('#'+pdom_id).append('<div id="' + pdom_id + '_location" class="text-center location"><h4>Location Probability Distribution</h4><p class="feature-value">'+DEFAULT_VALUE+'</p></div>');
+		$('#'+pdom_id).append('<div id="' + pdom_id + '_location" class="location"><h4 class="text-center">Location Probability Distribution</h4><p class="feature-value">'+DEFAULT_VALUE+'</p></div>');
 		return;
 	}
 
@@ -514,9 +536,9 @@ function renderNetphos(pdom_id, netphos) {
 		}
 	}
 
-	var table_head = '<table class="table table-hover"><thead><tr><th>ID</th><th>Pathway</th></thead>'
+	var table_head = '<table class="table table-hover"><thead><tr><th>Position</th><th>Phosphorylation types</th></thead>'
 	var table_body = '<tbody>' + rows + '</tbody>';
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_netphos" class="text-center netphos"><h4>Netphos</h4><div class="feature-value">'+table_head + table_body +' </table></div></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_netphos" class="netphos"><h4 class="text-center">Netphos</h4><div class="feature-value">'+table_head + table_body +' </table></div></div>');
 }
 
 function renderOGlycosylation(pdom_id, og, seq) {
@@ -542,7 +564,7 @@ function renderOGlycosylation(pdom_id, og, seq) {
 	}
 
 	// "site-type"
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_O_Glycosylation" class="text-center O-Glycosylation"><h4>O Glycosylation</h4><div class="feature-value">'+ og  +'</div></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_O_Glycosylation" class="O-Glycosylation"><h4 class="text-center ">O Glycosylation</h4><div class="feature-value">'+ og  +'</div></div>');
 }
 
 
@@ -551,7 +573,7 @@ function renderNGlycosylation(pdom_id, ng, seq) {
 	if(ng === null) {ng = DEFAULT_VALUE;}
 	else {
 		
-		var html = '<p>Location: ' + ng.replace(';', ', ') + '</p><p class="text-left">';
+		var html = '<p>Location: ' + ng.replace(/;/g, ', ') + '</p><p class="text-left">';
 		ng = ng.split(';');
 		var locus = [];
 		for(var n in ng){
@@ -570,7 +592,7 @@ function renderNGlycosylation(pdom_id, ng, seq) {
 	}
 
 	// "site-type"
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_N_Glycosylation" class="text-center N-Glycosylation"><h4>N Glycosylation</h4><div class="feature-value">'+ ng  +'</div></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_N_Glycosylation" class="N-Glycosylation"><h4 class="text-center">N Glycosylation</h4><div class="feature-value">'+ ng  +'</div></div>');
 }
 
 
