@@ -542,7 +542,7 @@ function renderOGlycosylation(pdom_id, og, seq) {
 	}
 
 	// "site-type"
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_O_Glycosylation" class="text-center O-Glycosylation"><h4>O Glycosylation</h4><div class="feature-value">'+ og  +' bp</div></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_O_Glycosylation" class="text-center O-Glycosylation"><h4>O Glycosylation</h4><div class="feature-value">'+ og  +'</div></div>');
 }
 
 
@@ -570,7 +570,7 @@ function renderNGlycosylation(pdom_id, ng, seq) {
 	}
 
 	// "site-type"
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_N_Glycosylation" class="text-center N-Glycosylation"><h4>N Glycosylation</h4><div class="feature-value">'+ ng  +' bp</div></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_N_Glycosylation" class="text-center N-Glycosylation"><h4>N Glycosylation</h4><div class="feature-value">'+ ng  +'</div></div>');
 }
 
 
