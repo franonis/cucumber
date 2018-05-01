@@ -19,7 +19,7 @@
 
       <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
       {{-- <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script> --}}
-      <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+      <script src="{{ asset('node_modules/jquery/dist/jquery.min.js') }}"></script>
 
       <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
       {{-- <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> --}}

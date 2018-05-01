@@ -27,3 +27,7 @@ Route::group(['prefix' => '/search'], function () {
 
 Route::get('/protein/{protein}/sequence/download', 'PublicController@downloadProteinSequence');
 Route::get('/proteins/compare', 'PublicController@compareProteins');
+
+Route::get('/tools/blast', 'PublicController@blastEntry');
+Route::post('/tools/blast/run', 'PublicController@runBlast');
+Route::get('/tools/blast/{job}', 'PublicController@checkBlastResult');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Library\FastaFile;
 use App\Library\Search;
 use Illuminate\Http\Request;
 
@@ -142,5 +143,72 @@ class PublicController extends Controller
                 'Content-length' => strlen($fasta),
                 'Connection' => 'close',
             ]);
+    }
+
+    public function blastEntry()
+    {
+        return view('tool.blast');
+    }
+
+    public function checkBlastResult($job)
+    {
+        if ($this->isBlastOver($job)) {
+            dd('blast over!');
+        } elseif ($this->isBlastRunning($job)) {
+            return view('tool.blast_running', ['job' => $job]);
+        } else {
+            return view('errors.404', ['msg' => 'BLAST job not found!']);
+        }
+    }
+
+    public function runBlast(Request $r)
+    {
+        $program = $r->program;
+        $seq = $r->seq;
+        $evalue = (double) $r->evalue;
+        if (!in_array($program, ['blastp', 'tblastn'])) {
+            return view('tool.blast', ['errors' => ['Program Not found!']]);
+        }
+
+        $prefix_name = md5($seq);
+        $fa_file = storage_path('blast') . '/' . $prefix_name . '.fa';
+
+        if ($this->isBlastOver($prefix_name)) {
+            return redirect()->action('PublicController@showBlastResult', ['job' => $prefix_name]);
+        }
+
+        if ($this->isBlastRunning($prefix_name)) {
+            return redirect()->action('PublicController@blastRunning', ['job' => $prefix_name]);
+        }
+
+        try {
+            $fasta = new FastaFile();
+            $fasta->writeToFile($seq, $fa_file);
+        } catch (\Exception $e) {
+            return view('tool.blast', ['errors' => [$e->getMessage()]]);
+        }
+
+        if ($evalue <= 0) {
+            return view('tool.blast', ['errors' => ['Invalid e-value!']]);
+        }
+    }
+
+    private function isBlastOver($prefix)
+    {
+        // blast结果文件存在，直接返回结果
+        $blast_output_file = storage_path('blast') . '/' . $prefix . '.out';
+
+        return file_exists($blast_output_file) ? true : false;
+    }
+
+    private function isBlastRunning($prefix)
+    {
+        if ($this->isBlastOver($prefix)) {
+            return false;
+        }
+
+        // fasta文件存在，提醒用户仍在blast
+        $fa_file = storage_path('blast') . '/' . $prefix . '.fa';
+        return file_exists($fa_file) ? true : false;
     }
 }

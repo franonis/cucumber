@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('vendor/layer/skin/default/layer.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/awesome-bootstrap-checkbox.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('/layer/skin/default/layer.css') }}">
 @endsection
 @section('navbar')
   @include('partials.navbar')
@@ -13,26 +12,22 @@
         <hr>
         @include('partials.errors')
 
-        <form id="blastform" method="post" action="{{ url('tools/blast/dispatch') }}">
+        <form id="blastform" method="post" action="{{ url('/tools/blast/run') }}">
         	{{ csrf_field() }}
 
 	        <div class="col-md-12">
 	            <h4>Program</h4>
-	            <select id="program" name="program" class="form-control"></select>
+	            <select id="program" name="program" class="form-control">
+	            	<option value="blastp">BLASTP</option>
+	            	<option value="tblastn">TBLASTN</option>
+	            </select>
 	        </div>
 	        <div class="col-md-12">
-	            <h4>Query Sequence
-	                <small>Examples
-	                    <select id="example">
-	                        <option>--select an example--</option>
-	                    </select>
-	                </small>
+	            <h4>
+	            	Query Sequence
+					<button id="example" type="button" class="pull-right button button-tiny button-primary">Example</button>
 	            </h4>
-	            <textarea class="input-hg form-control" class="reset" rows="5" name="seq" id="seq"
-					data-toggle="tooltip" data-placement="bottom"
-					title="Your job will be put to queue if more than
-						{{ config('blast.min_sequence_number_to_queue') }} sequences were put in"
-	            	></textarea>
+	            <textarea class="input-hg form-control" class="reset" rows="5" name="seq" id="seq"></textarea>
 	        </div>
 	        <div class="col-md-12">
 	            <h4>Expect (e-value) Threshold:
@@ -42,7 +37,7 @@
 	                </small>
 	            </h4>
 			</div>
-			<div class="col-md-12">
+			{{-- <div class="col-md-12">
 				<h4>Output Format:</h4>
             	<select id="outfmt" name="outfmt" class="form-control">
                     <option value="0" selected="selected">(0) Pairwise</option>
@@ -58,20 +53,11 @@
                     <option value="10">(10) Comma-separated values</option>
                     <option value="11">(11) BLAST archive format (ASN.1)</option>
                 </select>
-			</div>
-			<div class="col-md-12">
-				<h4>Job Name:
-	                <input id="job_name" type="text" name="job_name"
-	                	style="width:45%; display:inline;" class="form-control"
-	                	placeholder="Optional. Only numbers, letters and underlines allowed!"
-						data-toggle="tooltip" data-placement="bottom"
-						title="Only numbers, letters and underlines allowed. '{{ auth()->user()->name .'_'}}' will be prepended to the name you set automatically.">
-	                </input>
-	            </h4>
-			</div>
+			</div> --}}
+
 			<div class="col-md-12 text-center">
 	            <br>
-	            <button id="submit" class="button button-rounded button-primary" type="button">BLAST</button>
+	            <button id="submit" class="button button-rounded button-primary" type="submit">BLAST</button>
 	            <button type="submit" style="display: none">BLAST</button>
 	            <p class="text-left">
 	            	<small>* Reference:
@@ -87,111 +73,25 @@
   @include('partials.footer')
 @endsection
 @section('js')
-<script src="{{ asset('vendor/layer/layer.js') }}"></script>
+<script src="{{ asset('/layer/layer.js') }}"></script>
 
 <script>
-	var config = {!! json_encode(config('blast')) !!};
-	// Set species select options
-	$('#species').html('');
-	$.each(config.blast_settings, function (i, setting) {
-		$('#species').append('<option value='+ setting.value +'>' + setting.name + '</option>')
-	});
-	setDB($('#species option:first').val());
-	$('#species').change(function(){
-		setDB($(this).val());
-		setProgram($('#species option:selected').val(), $('#database option:selected').val());
-	});
-
-	// Set database select options
-	function setDB (species) {
-		$.each(config.blast_settings, function(i,setting){
-			if(setting.value == species) {
-				$('#database').html('');
-				$.each(setting.database, function (j, db){
-					$('#database').append('<option value='+ db.dbname +'>' + db.name + '</option>')
-				});
-			}
-		});
-	}
-	setProgram($('#species').val(), $('#database option:first').val());
-	$('#database').change(function(){
-		setProgram($('#species option:selected').val(), $('#database option:selected').val());
-	});
-
-	// Set program
-	function setProgram (species, database) {
-		$.each(config.blast_settings, function(i, setting){
-			if(setting.value == species){
-				$.each(setting.database, function(j, db){
-					if(db.dbname == database) {
-						$('#program').html('');
-						$.each(db.programs, function (k,p){
-							$('#program').append('<option value="'+ config.blast_programs[p].name +'">'+ config.blast_programs[p].title +'</option>');
-						})
-					}
-				});
-			}
-		});
-	}
-
-	// set example
-	$.each(config.blast_example, function(i, e){
-		$('#example').append('<option value="'+ e.name +'">'+ e.name +'</option>')
-	});
-
-	$('#example').change(function(){
+	$('#example').click(function(){
 		$('#seq').html('');
 		name = $(this).val();
-		$.each(config.blast_example, function(i,e){
-			if(e.name == name) {
-				$('#seq').html(e.fasta);
-			}
-		});
-	});
-
-	$('#submit').on('click', function(){
-		seq = $('#seq').val();
-		$('#submit').html('Validate Sequence...<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="sr-only">Validating...</span>');
-		$.post('{{ url('tools/blast/sequence/validation') }}',
-				{seq:seq, _token: '{{csrf_token()}}'},
-					function(rep){
-						if(undefined !== rep.error){
-							layer.msg(rep.error);
-							$('#submit').text('BLAST');
-							$('#seq').focus();
-							return false;
-						}else{
-							$('#submit').html('Validating Job Name...<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="sr-only">Validating...</span>');
-							if($('#job_name').val()){
-								$.getJSON('{{ url('tools/blast/validate/jobname') }}/' + $('#job_name').val(),function (resp) {
-									if(resp.exists){
-										layer.msg('Job name exists already!');
-										$('#job_name').focus();
-										$('#submit').html('BLAST');
-										return false;
-									}
-									else {
-										$('#submit').html('BLASTing...<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="sr-only">BLASTing...</span>');
-										$('button[type="submit"]').click();
-									}
-								});
-							}
-							else {
-								$('#submit').html('BLASTing...<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="sr-only">BLASTing...</span>');
-								$('button[type="submit"]').click();
-							}
-						}
-					});
-		});
-
-	$('#job_name').keyup(function(){
-		job_name = $(this).val();
-		name = job_name.replace(/[^\d\w\_]+/g,'_');
-		name = name.replace(/\_+/g,'_');
-		if(name!=job_name){
-			$(this).val(name);
+		prog = $('#program').val();
+		if(prog == 'blastp'){
+			$('#seq').html(">A0A0A0LTV1\nMSTSELACAYAALALHDDGIAITAEKIAAVVAAAGLCVESYWPSLFAKLAEKRNIGDLLLNVGCGGGAAASVAVAAPTASAAAAPAIEEKREEPKEESDDDMGFSLFD");
+		} else if(prog == 'tblastn'){
+			$('#seq').html(">A0A0A0LTV1\nATGTCTACCAGTGAACTCGCGTGCGCGTACGCCGCCCTGGCTCTTCACGATGATGGAATCGCAATCACTGCGGAAAAGATTGCAGCCGTTGTAGCAGCTGCGGGGCTCTGTGTGGAATCTTACTGGCCTAGCTTGTTTGCTAAATTGGCCGAGAAGAGGAACATTGGGGACCTTCTTCTTAATGTTGGCTGTGGAGGTGGCGCTGCGGCTTCTGTGGCTGTAGCTGCTCCTACCGCCAGTGCTGCTGCCGCTCCTGCCATCGAGGAAAAGAGGGAGGAGCCAAAGGAGGAGAGCGATGATGACATGGGATTCAGCTTATTCGATTAA");
 		}
 	});
 
+	$('#blastform').submit(function(e) {
+		if($('#seq').val() == ''){
+			layer.msg('Sequence is empty!');
+			e.preventDefault();
+		}
+	})
 </script>
 @endsection

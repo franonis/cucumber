@@ -21,9 +21,9 @@
         <li id="tools" class="dropdown{{ ( preg_match('/tool/', Request::path()) ) ? ' active':'' }}">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            {{-- <li class="dropdown{{ (preg_match('/blast/', Request::path() ) ? ' active':'') }}">
+            <li class="dropdown{{ (preg_match('/blast/', Request::path() ) ? ' active':'') }}">
               <a href="{{ url('tools/blast') }}">BLAST </a>
-            </li> --}}
+            </li>
             <li class="dropdown{{ ( preg_match('/jbrowse/', Request::path()) ) ? ' active':'' }}">
               <a href="{{ url('http://cmb.bnu.edu.cn:8088/jbrowse/index.html?data=data%2Fjson%2Fcuas&loc=Chr4%3A14023141..14037190&tracklist=1&nav=1&overview=1&tracks=DNA%2Cfeatures') }}" target="jbrowse">JBrowse </a>
             </li>

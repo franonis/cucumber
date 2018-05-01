@@ -277,7 +277,7 @@ function renderCoil(pdom_id, coil, seq) {
 		coil = html + '</p>';
 	}
 	// C/E/H - start - end
-	$('#'+pdom_id).append('<div id="' + pdom_id + '_coil" class="text-center coil"><h4>Coil</h4><div class="feature-value">'+ coil +' </div></div>');
+	$('#'+pdom_id).append('<div id="' + pdom_id + '_coil" class="text-center coil"><h4>Coiled coils</h4><div class="feature-value">'+ coil +' </div></div>');
 }
 
 function renderLowComplexity(pdom_id, lc, seq) {
@@ -431,7 +431,7 @@ function renderProteinFunction(pdom_id, pf) {
 			go = p.shift();
 			asp = p.shift();
 			desc = p.join(' ');
-			rows += '<tr><td>'+ go +'</td><td>'+ go +'</td><td class="text-left">'+ desc +'</td></tr>';
+			rows += '<tr><td>'+ go +'</td><td>'+ asp +'</td><td class="text-left">'+ desc +'</td></tr>';
 		}
 	}
 

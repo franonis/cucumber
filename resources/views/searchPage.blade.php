@@ -17,8 +17,6 @@
 @section('content')
 <div class="container content">
     <div class="row">
-        <h2>Specified Feature Search</h2>
-        <hr/>
         @include('partials.errors')
         <div class="panel panel-info regionbox">
             <div class="panel-heading"><h4>A. Search by Name</h4></div>
