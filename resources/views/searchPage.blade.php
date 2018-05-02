@@ -35,9 +35,9 @@
 
             <h4>2. Input the gene/protein:</h4>
             <div class="col-md-12">
-                <input type="text" name="query" class="form-control" placeholder="e.g. Csa4G338980"  autocomplete="on" style="width:200px; display:inline-block !important" required>&nbsp;&nbsp;
+                <input type="text" name="query" class="form-control" placeholder="e.g. Csa1G008410"  autocomplete="on" style="width:200px; display:inline-block !important" required>&nbsp;&nbsp;
                 <small>Example:
-                    <a href="{{ url('search/gene/Csa4G338980') }}" id="example">Csa4G338980</a>
+                    <a href="{{ url('search/gene/Csa1G008410') }}" id="example">Csa1G008410</a>
                 </small>
             </div>
             <div class="col-md-12 text-center" >
@@ -109,16 +109,16 @@
         type = $('#type').val()
 
         if(type == 'protein'){
-            value = 'Csa4G338980.1'
-            link = '{{ url('search/protein/Csa4G338980.1') }}'
+            value = 'Csa1G008410.1'
+            link = '{{ url('search/protein/Csa1G008410.1') }}'
         }
         else if(type == 'uniprot'){
-            value = 'A0A0A0LTV1';
-            link = '{{ url('search/uniprot/A0A0A0LTV1') }}'
+            value = 'A0A0A0LPA2';
+            link = '{{ url('search/uniprot/A0A0A0LPA2') }}'
         }
         else {
-            value = 'Csa4G338980';
-            link = '{{ url('search/gene/Csa4G338980') }}'
+            value = 'Csa1G008410';
+            link = '{{ url('search/gene/Csa1G008410') }}'
         }
         $('#example').html(value)
         $('#example').attr('href', link);
